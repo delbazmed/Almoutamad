@@ -26,9 +26,9 @@ button,input,select,textarea{font-family:var(--ff)}
 @keyframes fu{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 .hdr{display:flex;justify-content:space-between;align-items:center;padding:calc(12px + env(safe-area-inset-top)) 14px 12px;background:linear-gradient(180deg,var(--p3),var(--p1));border-bottom:2px solid var(--g);flex:none;transition:all .3s}
 .brand{font:800 20px var(--fn);color:var(--g);line-height:1.1}
-.brand small{display:block;font:600 10px var(--ff);color:var(--tx3);letter-spacing:.3px}
-.hb{display:flex;gap:8px}
-.cp{border:1px solid var(--ln2);background:var(--p3);color:var(--tx);border-radius:20px;padding:7px 12px;font:700 12px var(--ff);min-width:44px}
+.brand small{display:block;font:600 10px var(--ff);color:var(--tx3);letter-spacing:.3px;white-space:nowrap}
+.hb{display:flex;gap:6px}
+.cp{border:1px solid var(--ln2);background:var(--p3);color:var(--tx);border-radius:20px;padding:7px 9px;font:700 12px var(--ff);min-width:38px;line-height:1.2}
 .cp.on{border-color:var(--g);color:var(--g)}
 .sb{padding:10px 12px 6px;flex:none}
 .in{width:100%;background:var(--p3);border:1px solid var(--ln2);border-radius:12px;color:var(--tx);padding:12px;font:600 14px var(--ff);outline:none;transition:border .2s}
@@ -154,8 +154,8 @@ textarea.in{resize:none;min-height:60px}
 <!-- ============ البحث ============ -->
 <section class="scr on" id="s-search">
   <div class="hdr">
-    <div class="brand">المعتمد<small>AL MOUTAMAD · Gestion de stock</small></div>
-    <div class="hb"><button class="cp" id="b-cur-1" onclick="togCur()">DA</button><button class="cp" id="b-lock-1" onclick="lockBtn()">🔓</button></div>
+    <div class="brand">المعتمد<small>AL MOUTAMAD · Stock</small></div>
+    <div class="hb"><button class="cp" id="b-cur-1" onclick="togCur()">DA</button><button class="cp" id="b-th-1" onclick="togTheme()">☀️</button><button class="cp" id="b-lock-1" onclick="lockBtn()">🔓</button><button class="cp" id="b-set-1" onclick="go('set')">⚙️</button></div>
   </div>
   <div class="sb"><input id="q" class="in big" type="search" placeholder="🔍 قطعة · مرجع · سيارة / Pièce · Réf" oninput="rS()" autocomplete="off"></div>
   <div class="chips" id="fch"></div>
@@ -166,7 +166,7 @@ textarea.in{resize:none;min-height:60px}
 <section class="scr" id="s-sell">
   <div class="hdr">
     <div class="brand">بيع سريع<small>Vente · Bon de vente</small></div>
-    <div class="hb"><button class="cp" id="b-cur-2" onclick="togCur()">DA</button><button class="cp" id="b-lock-2" onclick="lockBtn()">🔓</button></div>
+    <div class="hb"><button class="cp" id="b-cur-2" onclick="togCur()">DA</button><button class="cp" id="b-th-2" onclick="togTheme()">☀️</button><button class="cp" id="b-lock-2" onclick="lockBtn()">🔓</button><button class="cp" id="b-set-2" onclick="go('set')">⚙️</button></div>
   </div>
   <div class="sb"><input id="sq" class="in big" type="search" placeholder="➕ ابحث لإضافة قطعة إلى الوصل" oninput="pkRender('sq','spk',addCartPick)" autocomplete="off"></div>
   <div class="pkl" id="spk" style="margin-bottom:6px"></div>
@@ -178,7 +178,7 @@ textarea.in{resize:none;min-height:60px}
 <section class="scr" id="s-stock">
   <div class="hdr">
     <div class="brand">المخزن العام<small>Stock · Inventaire</small></div>
-    <div class="hb"><button class="cp" id="b-cur-3" onclick="togCur()">DA</button><button class="cp" id="b-lock-3" onclick="lockBtn()">🔓</button></div>
+    <div class="hb"><button class="cp" id="b-cur-3" onclick="togCur()">DA</button><button class="cp" id="b-th-3" onclick="togTheme()">☀️</button><button class="cp" id="b-lock-3" onclick="lockBtn()">🔓</button><button class="cp" id="b-set-3" onclick="go('set')">⚙️</button></div>
   </div>
   <div class="scrl" id="stk"></div>
 </section>
@@ -187,7 +187,7 @@ textarea.in{resize:none;min-height:60px}
 <section class="scr" id="s-hist">
   <div class="hdr">
     <div class="brand">السجل<small>Historique</small></div>
-    <div class="hb"><button class="cp" id="b-cur-4" onclick="togCur()">DA</button><button class="cp" id="b-lock-4" onclick="lockBtn()">🔓</button></div>
+    <div class="hb"><button class="cp" id="b-cur-4" onclick="togCur()">DA</button><button class="cp" id="b-th-4" onclick="togTheme()">☀️</button><button class="cp" id="b-lock-4" onclick="lockBtn()">🔓</button><button class="cp" id="b-set-4" onclick="go('set')">⚙️</button></div>
   </div>
   <div class="scrl" id="his"></div>
 </section>
@@ -196,7 +196,7 @@ textarea.in{resize:none;min-height:60px}
 <section class="scr" id="s-set">
   <div class="hdr">
     <div class="brand">الإعدادات<small>Paramètres</small></div>
-    <div class="hb"><button class="cp" id="b-lock-5" onclick="lockBtn()">🔓</button></div>
+    <div class="hb"><button class="cp" id="b-th-5" onclick="togTheme()">☀️</button><button class="cp" id="b-lock-5" onclick="lockBtn()">🔓</button></div>
   </div>
   <div class="scrl" id="set"></div>
 </section>
@@ -234,9 +234,9 @@ textarea.in{resize:none;min-height:60px}
 <script>
 'use strict';
 /* ================= الثوابت والبيانات ================= */
-const APP_VERSION='1.0.1';
+const APP_VERSION='1.0.2';
 const KEY='almoutamad_v1';
-const CHANGELOG=[{v:'1.0.1',d:'2026-11-07',items:['ختم «المعتمد» على كل ملفات PDF وعند التوقيعات، وإضافة اسم المطور وتاريخ الإصدار']},{v:'1.0.0',d:'2026-11-07',items:['الإصدار الأول: بحث ثنائي اللغة، رف + مخزن عام، بيع بوصل PDF، توريد، دينار/أورو، رمز حماية الأسعار، نسخ احتياطي']}];
+const CHANGELOG=[{v:'1.0.2',d:'2026-11-07',items:['زر الليل/النهار وزر الإعدادات في أعلى كل شاشة بجانب زر القفل']},{v:'1.0.1',d:'2026-11-07',items:['ختم «المعتمد» على كل ملفات PDF وعند التوقيعات، وإضافة اسم المطور وتاريخ الإصدار']},{v:'1.0.0',d:'2026-11-07',items:['الإصدار الأول: بحث ثنائي اللغة، رف + مخزن عام، بيع بوصل PDF، توريد، دينار/أورو، رمز حماية الأسعار، نسخ احتياطي']}];
 const BRANDS=['Renault','Peugeot','Citroën','Dacia','Hyundai','Kia','Toyota','Volkswagen','Seat','Skoda','Fiat','Chevrolet','Suzuki','Nissan','Ford','Opel','Mercedes','BMW','Audi','Mitsubishi','Mazda','Honda','Isuzu','Chery','Geely','Iveco','Mixte / عام'];
 const SYN=[
 ['فلتر زيت','فلتر الزيت','filtre a huile','filtre huile','oil filter'],
@@ -360,6 +360,7 @@ function hdrs(){
   const lk=D.set.pin?(UNLOCK?'🔓':'🔒'):'🔓';
   $$('[id^=b-lock-]').forEach(b=>{b.textContent=lk;b.classList.toggle('on',!!D.set.pin&&UNLOCK)});
   $$('[id^=b-cur-]').forEach(b=>{b.textContent=isE()?'€':'DA';b.classList.toggle('on',isE())});
+  $$('[id^=b-th-]').forEach(b=>{b.textContent=D.set.theme==='light'?'🌙':'☀️'});
 }
 function bdg(){const n=D.cart.reduce((a,c)=>a+c.qty,0);const b=$('#cbd');b.textContent=n;b.classList.toggle('on',n>0)}
 const OVS=[];let SKIP=0,HIST=false;
@@ -773,7 +774,8 @@ function rSet(){
   keep.forEach(sgOpen);el.scrollTop=old;
 }
 function saveRate(){const v=parseFloat($('#st-rate').value);if(!(v>0)){toast('أدخل سعراً صحيحاً','e');return}D.set.rate=v;D.set.rateDate=Date.now();SD();toast('حُفظ: 1 € = '+nf(v)+' دج');rAll()}
-function setTheme(t){D.set.theme=t;SD();document.body.classList.toggle('light',t==='light');$('meta[name=theme-color]').content=t==='light'?'#eef1f6':'#070b12';rSet()}
+function setTheme(t){D.set.theme=t;SD();document.body.classList.toggle('light',t==='light');$('meta[name=theme-color]').content=t==='light'?'#eef1f6':'#070b12';rAll()}
+function togTheme(){setTheme(D.set.theme==='light'?'dark':'light')}
 function expBackup(){
   const blob=new Blob([JSON.stringify(D)],{type:'application/json'});
   const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='almoutamad_backup_'+iso(Date.now())+'.json';
