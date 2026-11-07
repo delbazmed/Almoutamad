@@ -8,9 +8,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Normalize service account JSON
+        id: sa
+        env:
+          RAW: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_ALMOUTAMAD_BAA85 }}
+        run: |
+          python3 - <<'PY'
+          import os, json
+          d = json.loads(os.environ['RAW'], strict=False)
+          out = json.dumps(d)
+          print('::add-mask::' + out)
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
+              f.write('json=' + out + '\n')
+          PY
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
-          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_ALMOUTAMAD_BAA85 }}
+          firebaseServiceAccount: ${{ steps.sa.outputs.json }}
           channelId: live
           projectId: almoutamad-baa85
