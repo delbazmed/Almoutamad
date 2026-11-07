@@ -145,6 +145,7 @@ textarea.in{resize:none;min-height:60px}
 .tl b{color:var(--g)}
 .mg{font-size:12px;font-weight:700;margin-top:6px;color:var(--g)}
 .mg.n{color:var(--red)}
+.qrc{width:min(280px,100%);height:auto;aspect-ratio:1;image-rendering:pixelated;border-radius:14px;display:block;margin:12px auto;background:#fff}
 @media (max-width:360px){.pi{width:92px}}
 </style>
 </head>
@@ -217,6 +218,10 @@ textarea.in{resize:none;min-height:60px}
 <div class="ov" id="ov-supply"><div class="sh"><div class="gh"></div><div class="sht"><b>توريد · Approvisionnement</b><button class="x" onclick="cl('ov-supply')">✕</button></div><div class="shb" id="sp-b"></div></div></div>
 <div class="ov" id="ov-sale"><div class="sh"><div class="gh"></div><div class="sht"><b id="sl-t">وصل</b><button class="x" onclick="cl('ov-sale')">✕</button></div><div class="shb" id="sl-b"></div></div></div>
 <div class="ov" id="ov-rep"><div class="sh"><div class="gh"></div><div class="sht"><b>تقارير PDF</b><button class="x" onclick="cl('ov-rep')">✕</button></div><div class="shb" id="rp-b"></div></div></div>
+<div class="ov" id="ov-brands"><div class="sh"><div class="gh"></div><div class="sht"><b>🚗 أنواع السيارات</b><button class="x" onclick="cl('ov-brands');dls()">✕</button></div><div class="shb" id="br-b"></div></div></div>
+<div class="ov" id="ov-qr"><div class="sh"><div class="gh"></div><div class="sht"><b>▦ باركود التطبيق</b><button class="x" onclick="cl('ov-qr')">✕</button></div><div class="shb" id="qr-b"></div></div></div>
+<div class="ov ctr" id="ov-new"><div class="sh"><div class="sht"><b>🆕 ما الجديد</b><button class="x" onclick="cl('ov-new')">✕</button></div><div class="shb" id="nw-b"></div></div></div>
+<div class="ov ctr" id="ov-upd"><div class="sh"><div class="shb" id="up-b" style="padding-top:18px"></div></div></div>
 <div class="ov ctr" id="ov-pin"><div class="sh"><div class="sht"><b id="pn-t">الرمز</b><button class="x" onclick="cl('ov-pin')">✕</button></div><div class="shb" id="pn-b"></div></div></div>
 <div class="ov ctr" id="ov-ask" style="z-index:70"><div class="sh"><div class="shb" id="ak-b" style="padding-top:18px"></div></div></div>
 <div class="ifw" id="ov-iframe">
@@ -231,12 +236,13 @@ textarea.in{resize:none;min-height:60px}
 
 <script src="libs/html2canvas.min.js"></script>
 <script src="libs/jspdf.umd.min.js"></script>
+<script src="libs/qrcode.js"></script>
 <script>
 'use strict';
 /* ================= الثوابت والبيانات ================= */
-const APP_VERSION='1.0.2';
+const APP_VERSION='1.0.3';
 const KEY='almoutamad_v1';
-const CHANGELOG=[{v:'1.0.2',d:'2026-11-07',items:['زر الليل/النهار وزر الإعدادات في أعلى كل شاشة بجانب زر القفل']},{v:'1.0.1',d:'2026-11-07',items:['ختم «المعتمد» على كل ملفات PDF وعند التوقيعات، وإضافة اسم المطور وتاريخ الإصدار']},{v:'1.0.0',d:'2026-11-07',items:['الإصدار الأول: بحث ثنائي اللغة، رف + مخزن عام، بيع بوصل PDF، توريد، دينار/أورو، رمز حماية الأسعار، نسخ احتياطي']}];
+const CHANGELOG=[{v:'1.0.3',d:'2026-11-07',items:['نافذة تنبيه عند توفر تحديث جديد مع زر «تحديث الآن»','نافذة «ما الجديد» تظهر بعد كل تحديث','إدارة أنواع السيارات: إضافة وتعديل وحذف (الإعدادات ← أنواع السيارات)','مشاركة التطبيق عبر واتساب أو الباركود QR أو الرابط (الإعدادات ← مشاركة التطبيق)']},{v:'1.0.2',d:'2026-11-07',items:['زر الليل/النهار وزر الإعدادات في أعلى كل شاشة بجانب زر القفل']},{v:'1.0.1',d:'2026-11-07',items:['ختم «المعتمد» على كل ملفات PDF وعند التوقيعات، وإضافة اسم المطور وتاريخ الإصدار']},{v:'1.0.0',d:'2026-11-07',items:['الإصدار الأول: بحث ثنائي اللغة، رف + مخزن عام، بيع بوصل PDF، توريد، دينار/أورو، رمز حماية الأسعار، نسخ احتياطي']}];
 const BRANDS=['Renault','Peugeot','Citroën','Dacia','Hyundai','Kia','Toyota','Volkswagen','Seat','Skoda','Fiat','Chevrolet','Suzuki','Nissan','Ford','Opel','Mercedes','BMW','Audi','Mitsubishi','Mazda','Honda','Isuzu','Chery','Geely','Iveco','Mixte / عام'];
 const SYN=[
 ['فلتر زيت','فلتر الزيت','filtre a huile','filtre huile','oil filter'],
@@ -280,7 +286,7 @@ const SYN=[
 ['عمود مرفقي','فيلبروكان','vilebrequin'],
 ['طقم فرامل خلفي','mâchoires','machoires','segments de frein','segment frein']
 ];
-const def=()=>({v:1,parts:[],sales:[],sups:[],cart:[],cm:{cust:'',note:''},seq:{inv:0},set:{shop:'',addr:'',phone:'',foot:'شكراً لثقتكم · Merci de votre confiance',cur:'DZD',rate:240,rateDate:'',pin:'',rec:'',theme:'dark',low:2,lastBackup:0,rateSet:false}});
+const def=()=>({v:1,parts:[],sales:[],sups:[],cart:[],brands:BRANDS.slice(),cm:{cust:'',note:''},seq:{inv:0},set:{shop:'',addr:'',phone:'',foot:'شكراً لثقتكم · Merci de votre confiance',cur:'DZD',rate:240,rateDate:'',pin:'',rec:'',theme:'dark',low:2,lastBackup:0,rateSet:false,seenVer:''}});
 let D=def(),UNLOCK=false,CUR='search',FLT='all',SN=80,FN=80,HT='sales',FT='o',STF={loc:'all',brand:'',type:'',low:false,sort:'upd',q:''};
 const HC=new Map();
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
@@ -466,7 +472,7 @@ function mvStock(id,dir){
 
 /* ================= نموذج القطعة ================= */
 function dls(){
-  const bs=[...new Set([...BRANDS,...D.parts.map(p=>p.brand).filter(Boolean)])];
+  const bs=[...new Set([...D.brands,...D.parts.map(p=>p.brand).filter(Boolean)])];
   $('#dl-brand').innerHTML=bs.map(b=>`<option value="${esc(b)}">`).join('');
   $('#dl-shelf').innerHTML=[...new Set(D.parts.map(p=>p.shelf).filter(Boolean))].sort().map(b=>`<option value="${esc(b)}">`).join('');
 }
@@ -485,7 +491,7 @@ function openForm(id,pre){
   $('#fm-b').innerHTML=`
   <label class="lb">الاسم · Désignation *</label><input id="f-name" class="in" placeholder="مثال: فلتر زيت / Filtre à huile" autocomplete="off">
   <label class="lb">المرجع · Référence</label><input id="f-ref" class="in ltr" placeholder="مثال: 8200768913" autocomplete="off">
-  <div class="g2"><div><label class="lb">السيارة · Marque</label><input id="f-brand" class="in" list="dl-brand" placeholder="Renault"></div>
+  <div class="g2"><div><label class="lb" style="display:flex;justify-content:space-between">السيارة · Marque <a onclick="openBrands()" style="color:var(--g);cursor:pointer">إدارة ✏️</a></label><input id="f-brand" class="in" list="dl-brand" placeholder="Renault"></div>
   <div><label class="lb">الموديلات / السنوات</label><input id="f-models" class="in" placeholder="Clio 3 · 2005-2012"></div></div>
   <label class="lb">النوع · Qualité</label>
   <div class="seg" id="f-seg"><button data-t="o" onclick="setT('o')">أصلية · Origine</button><button data-t="c" onclick="setT('c')">مقلدة · Adaptable</button></div>
@@ -519,6 +525,7 @@ async function saveForm(id){
   const o={name,ref:$('#f-ref').value.trim(),brand:$('#f-brand').value.trim(),models:$('#f-models').value.trim(),type:FT,shelf:$('#f-shelf').value.trim().toUpperCase(),
     qs:Math.max(0,parseInt($('#f-qs').value)||0),qw:Math.max(0,parseInt($('#f-qw').value)||0),min:Math.max(0,parseInt($('#f-min').value)||0),
     buy:see?Math.max(0,rp($('#f-buy'))):(ex?ex.buy:0),sell:Math.max(0,rp($('#f-sell'))),note:$('#f-note').value.trim(),ts:Date.now()};
+  if(o.brand&&!D.brands.some(b=>nz(b)===nz(o.brand)))D.brands.push(o.brand);
   if(ex){Object.assign(ex,o);SD();cl('ov-form');toast('تم الحفظ');rAll();if($('#ov-part').classList.contains('on'))openPart(id);return}
   if(o.ref){
     const dup=D.parts.find(p=>nr(p.ref)===nr(o.ref)&&p.type===o.type&&nz(p.brand)===nz(o.brand));
@@ -738,6 +745,10 @@ function rSet(){
     <div class="row"><input id="st-rate" class="in" type="number" inputmode="decimal" min="1" value="${s.rate}"><button class="btn btn-g" style="flex:.45" onclick="saveRate()">حفظ</button></div>
     <div class="hint">آخر تحديث: ${s.rateDate?fd(s.rateDate):'لم يُحدَّث بعد'}. السعر يُدخل يدوياً لأن سعر السوق الموازي يتغير يومياً. كل الأسعار تُخزَّن بالدينار، والأورو عرض فقط بهذا السعر.</div>
   </div></div>
+  <div class="sg" id="sg-brands"><div class="sgh" onclick="sgT('sg-brands')">🚗 أنواع السيارات<i>▾</i></div><div class="sgb">
+    <div class="hint" style="margin-top:0">${D.brands.length} نوع في القائمة. أضف أو عدّل أو احذف؛ تعديل الاسم يغيّره في كل القطع المرتبطة به.</div>
+    <button class="btn btn-g btn-fw" style="margin-top:10px" onclick="openBrands()">إدارة أنواع السيارات</button>
+  </div></div>
   <div class="sg" id="sg-sec"><div class="sgh" onclick="sgT('sg-sec')">🔒 حماية أسعار الشراء والأرباح<i>▾</i></div><div class="sgb">
     <div class="hint" style="margin-top:0">${s.pin?'الرمز مفعّل: أسعار الشراء والأرباح مخفية عن الزبون والعامل حتى إدخال الرمز، وتُقفل تلقائياً عند الخروج من التطبيق.':'غير مفعّل: أسعار الشراء والأرباح ظاهرة دائماً.'} هذه حماية للعرض فقط، وليست تشفيراً للبيانات.</div>
     <div class="row" style="margin-top:10px">${s.pin?`<button class="btn" onclick="openPin('change')">تغيير الرمز</button><button class="btn btn-r" onclick="openPin('remove')">إلغاء الرمز</button>`:`<button class="btn btn-g" onclick="openPin('set')">تعيين رمز</button>`}</div>
@@ -746,6 +757,11 @@ function rSet(){
     <div class="hint" style="margin-top:0">آخر نسخة: ${s.lastBackup?fd(s.lastBackup)+' '+ft(s.lastBackup):'لا توجد'}. البيانات محفوظة على هذا الهاتف فقط، فخذ نسخة أسبوعياً وأرسلها لنفسك.</div>
     <div class="row" style="margin-top:10px"><button class="btn btn-g" onclick="expBackup()">تصدير نسخة</button><button class="btn" onclick="$('#imp').click()">استيراد نسخة</button></div>
     <input id="imp" type="file" accept=".json,application/json" style="display:none" onchange="impBackup(this)">
+  </div></div>
+  <div class="sg" id="sg-share"><div class="sgh" onclick="sgT('sg-share')">📤 مشاركة التطبيق<i>▾</i></div><div class="sgb">
+    <div class="kv"><span>الرابط</span><b class="ltr" style="font-size:12px;word-break:break-all">${esc(appUrl())}</b></div>
+    <div class="g2" style="margin-top:10px"><button class="btn btn-g" onclick="shWA()">📱 واتساب</button><button class="btn" onclick="shCopy()">🔗 نسخ الرابط</button><button class="btn" onclick="openQR()">▦ الباركود QR</button>${navigator.share?'<button class="btn" onclick="shNative()">📤 مشاركة…</button>':''}</div>
+    <div class="hint">للتثبيت على هاتف المستخدم: يفتح الرابط في Chrome ثم القائمة ⋮ ← «تثبيت التطبيق» (أو «إضافة إلى الشاشة الرئيسية»). كل مستخدم تبقى بياناته على هاتفه فقط، فالمشاركة تنقل التطبيق وليس المخزون.</div>
   </div></div>
   <div class="sg" id="sg-th"><div class="sgh" onclick="sgT('sg-th')">🎨 المظهر<i>▾</i></div><div class="sgb">
     <div class="seg"><button class="${s.theme!=='light'?'on':''}" onclick="setTheme('dark')">داكن</button><button class="${s.theme==='light'?'on':''}" onclick="setTheme('light')">فاتح</button></div>
@@ -761,13 +777,17 @@ function rSet(){
     <b>نقل:</b> من بطاقة القطعة بين المخزن والرف.<br>
     <b>إلغاء وصل:</b> من «السجل» ← الوصل ← «إلغاء»؛ تعود الكمية تلقائياً.<br>
     <b>الأورو:</b> زر DA/€ أعلى الشاشة؛ حدّث سعر السكوار من الإعدادات.<br>
-    <b>PDF:</b> «السجل» أو «المخزن» ← تقارير/جرد.
+    <b>PDF:</b> «السجل» أو «المخزن» ← تقارير/جرد.<br>
+    <b>السيارات:</b> الإعدادات ← أنواع السيارات (إضافة/تعديل/حذف)، أو «إدارة» داخل نموذج القطعة.<br>
+    <b>المشاركة:</b> الإعدادات ← مشاركة التطبيق (واتساب · QR · رابط).<br>
+    <b>التحديث:</b> تظهر نافذة عند توفر إصدار جديد، ثم «ما الجديد» بعد التحديث.
   </div></div></div>
   <div class="sg" id="sg-about"><div class="sgh" onclick="sgT('sg-about')">ℹ️ حول التطبيق<i>▾</i></div><div class="sgb">
     <div class="kv"><span>التطبيق</span><b>المعتمد · Al Moutamad</b></div>
     <div class="kv"><span>الإصدار</span><b>v${APP_VERSION}</b></div>
     <div class="kv"><span>المطور</span><b>Delbaz_Med</b></div>
     <div class="kv"><span>تاريخ الإصدار</span><b>نوفمبر 2026</b></div>
+    <div class="row" style="margin:10px 0"><button class="btn" onclick="showNew(false)">🆕 ما الجديد</button><button class="btn" onclick="checkUpd()">🔄 التحقق من التحديث</button></div>
     <div class="kv"><span>الأصناف / الوصولات</span><b>${D.parts.length} / ${D.sales.length}</b></div>
     ${CHANGELOG.map(c=>`<div class="hint"><b style="color:var(--g)">v${c.v}</b> · ${c.d}<br>${c.items.map(esc).join('<br>')}</div>`).join('')}
   </div></div>`;
@@ -1003,12 +1023,140 @@ async function rmDemo(){
   D.parts=D.parts.filter(p=>!p.demo);D.sups=D.sups.filter(s=>!ids.has(s.pid));D.cart=D.cart.filter(c=>!ids.has(c.pid));SD();toast('تم الحذف');rAll();bdg();
 }
 
+
+/* ================= إدخال نص ================= */
+function askIn(msg,val,ok){
+  return new Promise(res=>{
+    $('#ak-b').innerHTML=`<div style="font-size:14px;margin-bottom:10px;font-weight:700">${esc(msg)}</div><input id="ak-i" class="in" autocomplete="off"><div class="row" style="margin-top:14px"><button class="btn" id="ak-n">إلغاء</button><button class="btn btn-g" id="ak-y">${esc(ok||'حفظ')}</button></div>`;
+    $('#ak-i').value=val||'';
+    ov('ov-ask');setTimeout(()=>{const i=$('#ak-i');if(i){i.focus();i.select()}},120);
+    const fin=v=>{cl('ov-ask');res(v)};
+    $('#ak-y').onclick=()=>fin($('#ak-i').value.trim());
+    $('#ak-n').onclick=()=>fin(null);
+    $('#ak-i').onkeydown=e=>{if(e.key==='Enter')fin($('#ak-i').value.trim())};
+  });
+}
+
+/* ================= أنواع السيارات ================= */
+const brCnt=b=>D.parts.filter(p=>p.brand===b).length;
+function openBrands(){rBrands();ov('ov-brands')}
+function rBrands(){
+  $('#br-b').innerHTML=`<div class="row"><input id="br-new" class="in" placeholder="سيارة جديدة · Nouvelle marque" autocomplete="off" onkeydown="if(event.key==='Enter')brAdd()"><button class="btn btn-g" style="flex:.4" onclick="brAdd()">إضافة</button></div>
+  <div class="cnt" style="padding:10px 0 4px">${D.brands.length} نوع</div>`+
+  (D.brands.length?D.brands.map((b,i)=>`<div class="kv" style="align-items:center"><span style="color:var(--tx)">${esc(b)} <small style="color:var(--tx3)">(${brCnt(b)} قطعة)</small></span><b style="display:flex;gap:6px"><button class="btn btn-s" onclick="brEdit(${i})">✏️</button><button class="btn btn-s btn-r" onclick="brDel(${i})">🗑️</button></b></div>`).join(''):'<div class="emp" style="padding:20px">القائمة فارغة</div>');
+}
+function brAdd(){
+  const i=$('#br-new'),n=i.value.trim();if(!n)return;
+  if(D.brands.some(b=>nz(b)===nz(n))){toast('هذا النوع موجود مسبقاً','e');return}
+  D.brands.push(n);SD();toast('تمت الإضافة');rBrands();rSetSoft();
+}
+async function brEdit(i){
+  const old=D.brands[i];
+  let nn=await askIn('تعديل اسم السيارة',old,'حفظ');
+  if(nn===null||!nn||nn===old)return;
+  const j=D.brands.findIndex((x,k)=>k!==i&&nz(x)===nz(nn));
+  if(j>=0)nn=D.brands[j];
+  D.parts.forEach(p=>{if(p.brand===old)p.brand=nn});
+  if(STF.brand===old)STF.brand='';
+  if(j>=0)D.brands.splice(i,1);else D.brands[i]=nn;
+  SD();toast(j>=0?'دُمج مع النوع الموجود':'تم التعديل');rBrands();rSetSoft();rAll();
+}
+async function brDel(i){
+  const b=D.brands[i],n=brCnt(b);
+  const y=await ask('حذف «'+b+'» من القائمة؟'+(n?'\nيوجد '+n+' قطعة بهذا النوع، وستصبح بدون نوع سيارة (القطع نفسها لا تُحذف).':''),'حذف',true);
+  if(!y)return;
+  D.parts.forEach(p=>{if(p.brand===b)p.brand=''});
+  if(STF.brand===b)STF.brand='';
+  D.brands.splice(i,1);SD();toast('تم الحذف');rBrands();rSetSoft();rAll();
+}
+function rSetSoft(){if(CUR==='set')rSet()}
+
+/* ================= مشاركة التطبيق ================= */
+const appUrl=()=>location.origin+location.pathname.replace(/index\.html$/,'');
+const shareMsg=()=>'تطبيق «المعتمد» لتسيير مخزن وبيع قطع غيار السيارات 🚗\nافتح الرابط في Chrome ثم القائمة ⋮ ← «تثبيت التطبيق»:\n'+appUrl();
+function shWA(){window.open('https://wa.me/?text='+encodeURIComponent(shareMsg()),'_blank')}
+async function shCopy(){
+  try{await navigator.clipboard.writeText(appUrl());toast('تم نسخ الرابط')}
+  catch(e){await ask('انسخ الرابط يدوياً:\n'+appUrl(),'حسناً',false,true)}
+}
+function shNative(){if(navigator.share)navigator.share({title:'المعتمد',text:shareMsg()}).catch(()=>{})}
+function drawQR(cv,text){
+  const qr=qrcode(0,'M');qr.addData(text);qr.make();
+  const n=qr.getModuleCount(),m=4,z=10;cv.width=cv.height=(n+2*m)*z;
+  const c=cv.getContext('2d');c.fillStyle='#fff';c.fillRect(0,0,cv.width,cv.height);c.fillStyle='#000';
+  for(let r=0;r<n;r++)for(let k=0;k<n;k++)if(qr.isDark(r,k))c.fillRect((k+m)*z,(r+m)*z,z,z);
+}
+function openQR(){
+  $('#qr-b').innerHTML=`<div class="hint" style="text-align:center;margin-top:0">امسح الباركود بكاميرا الهاتف لفتح التطبيق</div><canvas id="qr" class="qrc"></canvas>
+  <div class="kv"><span>الرابط</span><b class="ltr" style="font-size:12px;word-break:break-all">${esc(appUrl())}</b></div>
+  <div class="row" style="margin-top:12px"><button class="btn btn-g" onclick="qrSave()">💾 حفظ الصورة</button><button class="btn" onclick="shWA()">📱 واتساب</button></div>`;
+  ov('ov-qr');drawQR($('#qr'),appUrl());
+}
+function qrSave(){
+  const cv=$('#qr');if(!cv)return;
+  cv.toBlob(b=>{const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='QR_Almoutamad.png';document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500);toast('تم حفظ الصورة')},'image/png');
+}
+
+/* ================= التحديث و«ما الجديد» ================= */
+let SWREG=null,UPD_REQ=false;
+const vc=(a,b)=>{const x=a.split('.').map(Number),y=b.split('.').map(Number);for(let i=0;i<3;i++){const d=(x[i]||0)-(y[i]||0);if(d)return d}return 0};
+function initSW(){
+  if(!('serviceWorker' in navigator))return;
+  navigator.serviceWorker.addEventListener('controllerchange',()=>{if(UPD_REQ){UPD_REQ=false;location.reload()}});
+  navigator.serviceWorker.register('sw.js').then(reg=>{
+    SWREG=reg;
+    if(reg.waiting&&navigator.serviceWorker.controller)showUpd();
+    reg.addEventListener('updatefound',()=>{
+      const nw=reg.installing;
+      if(nw)nw.addEventListener('statechange',()=>{if(nw.state==='installed'&&navigator.serviceWorker.controller)setTimeout(()=>{if(reg.waiting)showUpd()},500)});
+    });
+    setInterval(()=>reg.update().catch(()=>{}),3600000);
+  }).catch(()=>{});
+  document.addEventListener('visibilitychange',()=>{if(!document.hidden&&SWREG)SWREG.update().catch(()=>{})});
+}
+function showUpd(){
+  if($('#ov-upd').classList.contains('on'))return;
+  $('#up-b').innerHTML=`<div style="font-size:32px;text-align:center">🔄</div><div style="font-weight:800;font-size:16px;text-align:center;margin:6px 0">تحديث جديد متوفر</div><div style="font-size:13px;color:var(--tx2);text-align:center;line-height:1.8;margin-bottom:14px">يوجد إصدار أحدث من «المعتمد». بياناتك محفوظة ولن تتأثر بالتحديث.</div><div class="row"><button class="btn" onclick="cl('ov-upd')">لاحقاً</button><button class="btn btn-g" onclick="doUpd()">تحديث الآن</button></div>`;
+  ov('ov-upd');
+}
+function doUpd(){
+  const w=SWREG&&SWREG.waiting;
+  UPD_REQ=true;
+  if(w){w.postMessage({type:'SKIP_WAITING'});setTimeout(()=>{if(UPD_REQ)location.reload()},4000)}
+  else location.reload();
+}
+async function checkUpd(){
+  if(!SWREG){toast('التحديث التلقائي غير متاح في هذا المتصفح','e');return}
+  toast('جارٍ التحقق من التحديث...');
+  try{await SWREG.update()}catch(e){toast('تعذّر التحقق (تأكد من الإنترنت)','e');return}
+  setTimeout(()=>{
+    if(SWREG.waiting)showUpd();
+    else if(SWREG.installing)toast('جارٍ تنزيل التحديث...');
+    else toast('أنت على أحدث إصدار ✓');
+  },1200);
+}
+function showNew(auto){
+  const seen=D.set.seenVer;
+  let L=CHANGELOG;
+  if(auto)L=seen?CHANGELOG.filter(c=>vc(c.v,seen)>0):CHANGELOG.slice(0,1);
+  if(!L.length)L=CHANGELOG.slice(0,1);
+  $('#nw-b').innerHTML=`<div style="text-align:center;font-weight:800;margin-bottom:10px;color:var(--g)">الإصدار v${APP_VERSION} · نوفمبر 2026</div>`+
+    L.map(c=>`<div class="card" style="margin:0 0 8px"><div style="font-weight:800;margin-bottom:4px">v${c.v} <span style="color:var(--tx3);font-weight:600;font-size:12px">· ${c.d}</span></div><div class="tl">${c.items.map(i=>'• '+esc(i)).join('<br>')}</div></div>`).join('')+
+    `<button class="btn btn-g btn-fw" style="margin-top:6px" onclick="cl('ov-new')">حسناً</button>`;
+  D.set.seenVer=APP_VERSION;SD();
+  ov('ov-new');
+}
+function chkNew(){
+  if(!D.set.seenVer&&!D.parts.length&&!D.sales.length){D.set.seenVer=APP_VERSION;SD();return}
+  if(D.set.seenVer!==APP_VERSION)setTimeout(()=>showNew(true),700);
+}
+
 /* ================= الإقلاع ================= */
 LD();
 document.body.classList.toggle('light',D.set.theme==='light');
 dls();bdg();go('search');
 if(navigator.storage&&navigator.storage.persist)navigator.storage.persist().catch(()=>{});
-if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
+initSW();chkNew();
 </script>
 </body>
 </html>

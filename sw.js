@@ -1,4 +1,4 @@
-const APP_VERSION = '1.0.2';
+const APP_VERSION = '1.0.3';
 const CACHE = 'almoutamad-' + APP_VERSION;
 const FILES = [
   './',
@@ -6,12 +6,26 @@ const FILES = [
   './manifest.json',
   './libs/html2canvas.min.js',
   './libs/jspdf.umd.min.js',
+  './libs/qrcode.js',
   './icons/icon-192.png',
   './icons/icon-512.png'
 ];
 
 self.addEventListener('install', e => {
-  e.waitUntil(caches.open(CACHE).then(c => c.addAll(FILES)).then(() => self.skipWaiting()));
+  e.waitUntil(
+    caches.open(CACHE)
+      .then(c => c.addAll(FILES))
+      .then(() => caches.keys())
+      .then(keys => {
+        // الإصدارات القديمة (قبل نافذة التحديث) لا تعرض أي نافذة: نفعّل الجديد مباشرة.
+        // من 1.0.3 فصاعداً ينتظر الإصدار الجديد حتى يضغط المستخدم «تحديث الآن».
+        if (keys.some(k => /^almoutamad-1\.0\.[012]$/.test(k))) return self.skipWaiting();
+      })
+  );
+});
+
+self.addEventListener('message', e => {
+  if (e.data && e.data.type === 'SKIP_WAITING') self.skipWaiting();
 });
 
 self.addEventListener('activate', e => {
@@ -31,7 +45,6 @@ self.addEventListener('fetch', e => {
   if (!sameOrigin && !isFont) return;
 
   if (isFont) {
-    // fonts: cache, refresh in background
     e.respondWith(
       caches.open(CACHE).then(c =>
         c.match(req).then(hit => {
@@ -43,7 +56,6 @@ self.addEventListener('fetch', e => {
     return;
   }
 
-  // app files: cache first, fall back to network, refresh cache
   e.respondWith(
     caches.match(req, { ignoreSearch: true }).then(hit => {
       if (hit) return hit;
