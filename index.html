@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="theme-color" content="#070b12">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+<title>المعتمد</title>
+<style>
+:root{--bg:#070b12;--p1:#0d1220;--p2:#121828;--p3:#19212f;--p4:#1f2a3c;--g:#00d97e;--gold:#f5b932;--red:#ff5d5d;--blu:#4da3ff;--tx:#eef2f8;--tx2:#a5b0c2;--tx3:#6b778c;--ln:#222d40;--ln2:#2c3a52;--ff:'Cairo','Segoe UI',Tahoma,Arial,sans-serif;--fn:'Cairo','Segoe UI',sans-serif}
+body.light{--bg:#eef1f6;--p1:#ffffff;--p2:#ffffff;--p3:#f2f5fa;--p4:#e4e9f2;--g:#00995a;--gold:#a87200;--red:#d63b3b;--blu:#1f6fd0;--tx:#111827;--tx2:#45536a;--tx3:#7a879b;--ln:#dde3ee;--ln2:#c7d0e0}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--tx);font-family:var(--ff);transition:background .3s,color .3s}
+body{overflow:hidden}
+button,input,select,textarea{font-family:var(--ff)}
+#app{position:fixed;top:0;bottom:0;left:0;right:0;max-width:480px;margin:0 auto;background:var(--bg);overflow:hidden;transition:background .3s}
+.scr{position:absolute;inset:0;display:none;flex-direction:column;padding-bottom:calc(60px + env(safe-area-inset-bottom))}
+.scr.on{display:flex;animation:fu .3s}
+@keyframes fu{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.hdr{display:flex;justify-content:space-between;align-items:center;padding:calc(12px + env(safe-area-inset-top)) 14px 12px;background:linear-gradient(180deg,var(--p3),var(--p1));border-bottom:2px solid var(--g);flex:none;transition:all .3s}
+.brand{font:800 20px var(--fn);color:var(--g);line-height:1.1}
+.brand small{display:block;font:600 10px var(--ff);color:var(--tx3);letter-spacing:.3px}
+.hb{display:flex;gap:8px}
+.cp{border:1px solid var(--ln2);background:var(--p3);color:var(--tx);border-radius:20px;padding:7px 12px;font:700 12px var(--ff);min-width:44px}
+.cp.on{border-color:var(--g);color:var(--g)}
+.sb{padding:10px 12px 6px;flex:none}
+.in{width:100%;background:var(--p3);border:1px solid var(--ln2);border-radius:12px;color:var(--tx);padding:12px;font:600 14px var(--ff);outline:none;transition:border .2s}
+.in:focus{border-color:var(--g)}
+.in.big{font-size:16px;padding:14px}
+.in::placeholder{color:var(--tx3);font-weight:400}
+textarea.in{resize:none;min-height:60px}
+.ltr{direction:ltr;text-align:right}
+.chips{display:flex;gap:8px;overflow-x:auto;padding:4px 12px 10px;scrollbar-width:none;flex:none}
+.chips::-webkit-scrollbar{display:none}
+.ch{flex:none;border:1px solid var(--ln2);background:var(--p2);color:var(--tx2);border-radius:20px;padding:7px 14px;font:700 12px var(--ff)}
+.ch.on{background:var(--g);color:#04150d;border-color:var(--g)}
+.scrl{flex:1;overflow-y:auto;padding:4px 0 90px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.scrl::-webkit-scrollbar{display:none}
+.card{background:var(--p2);border:1px solid var(--ln);border-radius:14px;padding:12px;margin:0 12px 10px;transition:all .3s}
+.pc{display:grid;grid-template-columns:1fr auto;gap:4px 10px;border-right:4px solid var(--g);cursor:pointer}
+.pc.y{border-right-color:var(--gold)}.pc.r{border-right-color:var(--red)}
+.pc:active{background:var(--p3)}
+.pn{font-weight:800;font-size:15px;line-height:1.35}
+.pr{font:600 12px monospace;direction:ltr;text-align:right;color:var(--tx2)}
+.pv{font-size:12px;color:var(--tx3)}
+.pp{font-weight:800;color:var(--g);font-size:16px;text-align:left;white-space:nowrap}
+.pq{font-size:12px;font-weight:700;text-align:left;color:var(--g)}
+.pq.y{color:var(--gold)}.pq.r{color:var(--red)}
+.pc3{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+.bd{font-size:11px;font-weight:700;padding:3px 9px;border-radius:20px;background:var(--p4);color:var(--tx2)}
+.bd.o{background:rgba(0,217,126,.15);color:var(--g)}
+.bd.c{background:rgba(245,185,50,.16);color:var(--gold)}
+.bd.sf{color:var(--blu)}.bd.bz{color:var(--gold)}.bd.rd{background:rgba(255,93,93,.15);color:var(--red)}
+.btn{border:0;border-radius:12px;padding:12px 16px;font:700 14px var(--ff);background:var(--p4);color:var(--tx);cursor:pointer}
+.btn:active{opacity:.8}
+.btn:disabled{opacity:.5}
+.btn-g{background:var(--g);color:#04150d}
+.btn-r{background:rgba(255,93,93,.15);color:var(--red)}
+.btn-fw{width:100%}
+.btn-s{padding:8px 12px;font-size:12px}
+.row{display:flex;gap:8px}.row>*{flex:1}
+.fab{position:absolute;left:16px;bottom:calc(74px + env(safe-area-inset-bottom));width:56px;height:56px;border-radius:50%;border:0;background:var(--g);color:#04150d;font-size:30px;font-weight:700;box-shadow:0 6px 20px rgba(0,217,126,.35);z-index:15;display:none;line-height:1}
+.fab.on{display:block}
+.nav{position:absolute;bottom:0;left:0;right:0;display:flex;background:var(--p1);border-top:1px solid var(--ln);padding-bottom:env(safe-area-inset-bottom);z-index:20;transition:all .3s}
+.nav button{flex:1;border:0;background:none;color:var(--tx3);padding:8px 2px 6px;font:700 10px var(--ff);display:flex;flex-direction:column;align-items:center;gap:3px;position:relative}
+.nav button.on{color:var(--g)}
+.nav svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.bdg{position:absolute;top:3px;right:calc(50% - 20px);background:var(--red);color:#fff;font-size:10px;border-radius:10px;padding:1px 6px;display:none}
+.bdg.on{display:block}
+.kpis{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:2px 12px 10px}
+.kp{background:var(--p2);border:1px solid var(--ln);border-radius:14px;padding:10px 12px}
+.kp b{display:block;font-size:17px;color:var(--g);font-weight:800}
+.kp span{font-size:11px;color:var(--tx2)}
+.kp.w b{color:var(--gold)}.kp.d b{color:var(--red)}
+.emp{text-align:center;color:var(--tx2);padding:40px 24px;font-size:14px;line-height:1.8}
+.emp .btn{margin-top:10px}
+.bnr{margin:0 12px 10px;background:rgba(245,185,50,.12);border:1px solid var(--gold);color:var(--gold);border-radius:12px;padding:10px 12px;font-size:12px;font-weight:700;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.cnt{font-size:11px;color:var(--tx3);padding:0 16px 6px}
+.lb{font-size:12px;color:var(--tx2);margin:10px 2px 4px;display:block;font-weight:600}
+.seg{display:flex;background:var(--p3);border-radius:12px;padding:3px;gap:3px}
+.seg button{flex:1;border:0;background:none;color:var(--tx2);padding:9px 4px;border-radius:10px;font:700 13px var(--ff)}
+.seg button.on{background:var(--g);color:#04150d}
+.ov{position:absolute;inset:0;background:rgba(0,0,0,.6);display:none;align-items:flex-end;z-index:50}
+.ov.on{display:flex;animation:fi .2s}
+@keyframes fi{from{opacity:0}to{opacity:1}}
+.sh{width:100%;max-height:94%;background:var(--p2);border-radius:20px 20px 0 0;display:flex;flex-direction:column;border-top:2px solid var(--g);animation:su .25s}
+@keyframes su{from{transform:translateY(40px)}to{transform:none}}
+.gh{width:42px;height:4px;background:var(--ln2);border-radius:4px;margin:8px auto 0;flex:none}
+.sht{display:flex;justify-content:space-between;align-items:center;padding:10px 16px;flex:none}
+.sht b{font-size:16px}
+.x{border:0;background:var(--p4);color:var(--tx);width:34px;height:34px;border-radius:50%;font-size:16px}
+.shb{overflow-y:auto;padding:0 16px calc(18px + env(safe-area-inset-bottom));flex:1}
+.ctr{align-items:center;justify-content:center;padding:24px}
+.ctr .sh{border-radius:20px;border:1px solid var(--ln2);max-width:340px;max-height:80%}
+.ifw{position:absolute;inset:0;background:#6b7280;display:none;flex-direction:column;z-index:60}
+.ifw.on{display:flex}
+.ift{display:flex;gap:8px;padding:calc(10px + env(safe-area-inset-top)) 10px 10px;background:var(--p1);border-bottom:2px solid var(--g)}
+.ift .btn{flex:1;padding:11px 6px;font-size:13px}
+#ifr{flex:1;border:0;background:#6b7280;width:100%}
+#toasts{position:absolute;top:calc(10px + env(safe-area-inset-top));left:12px;right:12px;z-index:99;pointer-events:none;display:flex;flex-direction:column;gap:8px}
+.ts{background:var(--p4);border:1px solid var(--g);color:var(--tx);padding:11px 14px;border-radius:12px;font-size:13px;font-weight:700;animation:fu .25s;box-shadow:0 6px 20px rgba(0,0,0,.4)}
+.ts.e{border-color:var(--red);color:var(--red)}
+.cl{display:grid;grid-template-columns:1fr auto;gap:6px 10px;align-items:center}
+.cl .nm{font-weight:800;font-size:14px}
+.cl .rf{font:600 11px monospace;direction:ltr;text-align:right;color:var(--tx3)}
+.qs{display:flex;align-items:center;gap:6px;background:var(--p3);border-radius:10px;padding:2px}
+.qs button{width:34px;height:34px;border:0;border-radius:8px;background:var(--p4);color:var(--tx);font-size:18px;font-weight:700}
+.qs b{min-width:28px;text-align:center}
+.pi{width:110px;padding:8px;font-size:14px;text-align:center}
+.lt{font-weight:800;color:var(--g);text-align:left}
+.warn{color:var(--red);font-size:11px;font-weight:700;grid-column:1/-1}
+.sum{flex:none;background:var(--p1);border-top:1px solid var(--ln);padding:10px 12px;transition:all .3s}
+.sum .tt{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px}
+.sum .tt b{font-size:22px;color:var(--g);font-weight:800}
+.sum small{color:var(--tx2);font-size:12px}
+.pkl{margin:6px 12px 0;background:var(--p2);border:1px solid var(--ln2);border-radius:12px;overflow:hidden}
+.pkl:empty{display:none}
+.pki{padding:10px 12px;border-bottom:1px solid var(--ln);font-size:13px;display:flex;justify-content:space-between;gap:8px;cursor:pointer}
+.pki:last-child{border:0}
+.pki:active{background:var(--p3)}
+.pki small{color:var(--tx3);font-family:monospace;direction:ltr}
+.day{font-size:12px;font-weight:800;color:var(--tx2);padding:8px 16px 6px}
+.sc{display:flex;justify-content:space-between;gap:10px;cursor:pointer}
+.sc .a{font-weight:800}.sc .b{font-size:12px;color:var(--tx2);margin-top:2px}
+.sc .t{font-weight:800;color:var(--g);text-align:left;white-space:nowrap}
+.sc.v{opacity:.5}.sc.v .t{text-decoration:line-through}
+.sg{margin:0 12px 10px;background:var(--p2);border:1px solid var(--ln);border-radius:14px;overflow:hidden}
+.sgh{display:flex;justify-content:space-between;align-items:center;padding:14px;font-weight:800;cursor:pointer}
+.sgh i{font-style:normal;color:var(--tx3);transition:transform .2s}
+.sg.on .sgh i{transform:rotate(180deg)}
+.sgb{display:none;padding:0 14px 14px}
+.sg.on .sgb{display:block}
+.kv{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--ln);font-size:13px}
+.kv:last-child{border:0}.kv span{color:var(--tx2)}.kv b{text-align:left}
+.hint{font-size:12px;color:var(--tx3);line-height:1.7;margin-top:6px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.tl{font-size:12px;color:var(--tx2);line-height:1.9}
+.tl b{color:var(--g)}
+.mg{font-size:12px;font-weight:700;margin-top:6px;color:var(--g)}
+.mg.n{color:var(--red)}
+@media (max-width:360px){.pi{width:92px}}
+</style>
+</head>
+<body>
+<div id="app">
+
+<!-- ============ البحث ============ -->
+<section class="scr on" id="s-search">
+  <div class="hdr">
+    <div class="brand">المعتمد<small>AL MOUTAMAD · Gestion de stock</small></div>
+    <div class="hb"><button class="cp" id="b-cur-1" onclick="togCur()">DA</button><button class="cp" id="b-lock-1" onclick="lockBtn()">🔓</button></div>
+  </div>
+  <div class="sb"><input id="q" class="in big" type="search" placeholder="🔍 قطعة · مرجع · سيارة / Pièce · Réf" oninput="rS()" autocomplete="off"></div>
+  <div class="chips" id="fch"></div>
+  <div class="scrl" id="res"></div>
+</section>
+
+<!-- ============ البيع ============ -->
+<section class="scr" id="s-sell">
+  <div class="hdr">
+    <div class="brand">بيع سريع<small>Vente · Bon de vente</small></div>
+    <div class="hb"><button class="cp" id="b-cur-2" onclick="togCur()">DA</button><button class="cp" id="b-lock-2" onclick="lockBtn()">🔓</button></div>
+  </div>
+  <div class="sb"><input id="sq" class="in big" type="search" placeholder="➕ ابحث لإضافة قطعة إلى الوصل" oninput="pkRender('sq','spk',addCartPick)" autocomplete="off"></div>
+  <div class="pkl" id="spk" style="margin-bottom:6px"></div>
+  <div class="scrl" id="cart" style="padding-bottom:12px"></div>
+  <div class="sum" id="csum"></div>
+</section>
+
+<!-- ============ المخزن ============ -->
+<section class="scr" id="s-stock">
+  <div class="hdr">
+    <div class="brand">المخزن العام<small>Stock · Inventaire</small></div>
+    <div class="hb"><button class="cp" id="b-cur-3" onclick="togCur()">DA</button><button class="cp" id="b-lock-3" onclick="lockBtn()">🔓</button></div>
+  </div>
+  <div class="scrl" id="stk"></div>
+</section>
+
+<!-- ============ السجل ============ -->
+<section class="scr" id="s-hist">
+  <div class="hdr">
+    <div class="brand">السجل<small>Historique</small></div>
+    <div class="hb"><button class="cp" id="b-cur-4" onclick="togCur()">DA</button><button class="cp" id="b-lock-4" onclick="lockBtn()">🔓</button></div>
+  </div>
+  <div class="scrl" id="his"></div>
+</section>
+
+<!-- ============ الإعدادات ============ -->
+<section class="scr" id="s-set">
+  <div class="hdr">
+    <div class="brand">الإعدادات<small>Paramètres</small></div>
+    <div class="hb"><button class="cp" id="b-lock-5" onclick="lockBtn()">🔓</button></div>
+  </div>
+  <div class="scrl" id="set"></div>
+</section>
+
+<button class="fab" id="fab" onclick="addPart()">+</button>
+
+<nav class="nav">
+  <button id="n-search" class="on" onclick="go('search')"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>بحث</button>
+  <button id="n-sell" onclick="go('sell')"><svg viewBox="0 0 24 24"><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/><path d="M2 3h3l2.7 11.4a1 1 0 001 .6h8.8a1 1 0 001-.8L20 7H6"/></svg>بيع<span class="bdg" id="cbd">0</span></button>
+  <button id="n-stock" onclick="go('stock')"><svg viewBox="0 0 24 24"><path d="M21 8l-9-5-9 5v8l9 5 9-5V8z"/><path d="M3 8l9 5 9-5M12 13v8"/></svg>المخزن</button>
+  <button id="n-hist" onclick="go('hist')"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>السجل</button>
+  <button id="n-set" onclick="go('set')"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 00.3 1.8l.1.1a2 2 0 11-2.8 2.8l-.1-.1a1.7 1.7 0 00-1.8-.3 1.7 1.7 0 00-1 1.5V21a2 2 0 11-4 0v-.1a1.7 1.7 0 00-1.1-1.5 1.7 1.7 0 00-1.8.3l-.1.1a2 2 0 11-2.8-2.8l.1-.1a1.7 1.7 0 00.3-1.8 1.7 1.7 0 00-1.5-1H3a2 2 0 110-4h.1a1.7 1.7 0 001.5-1.1 1.7 1.7 0 00-.3-1.8l-.1-.1a2 2 0 112.8-2.8l.1.1a1.7 1.7 0 001.8.3H9a1.7 1.7 0 001-1.5V3a2 2 0 114 0v.1a1.7 1.7 0 001 1.5 1.7 1.7 0 001.8-.3l.1-.1a2 2 0 112.8 2.8l-.1.1a1.7 1.7 0 00-.3 1.8V9a1.7 1.7 0 001.5 1H21a2 2 0 110 4h-.1a1.7 1.7 0 00-1.5 1z"/></svg>إعدادات</button>
+</nav>
+
+<!-- ============ Overlays (الترتيب = ترتيب الطبقات) ============ -->
+<div class="ov" id="ov-part"><div class="sh"><div class="gh"></div><div class="sht"><b id="pt-t">القطعة</b><button class="x" onclick="cl('ov-part')">✕</button></div><div class="shb" id="pt-b"></div></div></div>
+<div class="ov" id="ov-form"><div class="sh"><div class="gh"></div><div class="sht"><b id="fm-t">قطعة جديدة</b><button class="x" onclick="cl('ov-form')">✕</button></div><div class="shb" id="fm-b"></div></div></div>
+<div class="ov" id="ov-supply"><div class="sh"><div class="gh"></div><div class="sht"><b>توريد · Approvisionnement</b><button class="x" onclick="cl('ov-supply')">✕</button></div><div class="shb" id="sp-b"></div></div></div>
+<div class="ov" id="ov-sale"><div class="sh"><div class="gh"></div><div class="sht"><b id="sl-t">وصل</b><button class="x" onclick="cl('ov-sale')">✕</button></div><div class="shb" id="sl-b"></div></div></div>
+<div class="ov" id="ov-rep"><div class="sh"><div class="gh"></div><div class="sht"><b>تقارير PDF</b><button class="x" onclick="cl('ov-rep')">✕</button></div><div class="shb" id="rp-b"></div></div></div>
+<div class="ov ctr" id="ov-pin"><div class="sh"><div class="sht"><b id="pn-t">الرمز</b><button class="x" onclick="cl('ov-pin')">✕</button></div><div class="shb" id="pn-b"></div></div></div>
+<div class="ov ctr" id="ov-ask" style="z-index:70"><div class="sh"><div class="shb" id="ak-b" style="padding-top:18px"></div></div></div>
+<div class="ifw" id="ov-iframe">
+  <div class="ift"><button class="btn btn-g" id="pdfb" onclick="dlPDF()">تحميل PDF</button><button class="btn" onclick="prDoc()">طباعة</button><button class="btn" onclick="cl('ov-iframe')">إغلاق</button></div>
+  <iframe id="ifr" title="doc"></iframe>
+</div>
+<div id="toasts"></div>
+</div>
+
+<datalist id="dl-brand"></datalist>
+<datalist id="dl-shelf"></datalist>
+
+<script src="libs/html2canvas.min.js"></script>
+<script src="libs/jspdf.umd.min.js"></script>
+<script>
+'use strict';
+/* ================= الثوابت والبيانات ================= */
+const APP_VERSION='1.0.0';
+const KEY='almoutamad_v1';
+const CHANGELOG=[{v:'1.0.0',d:'2026-11-07',items:['الإصدار الأول: بحث ثنائي اللغة، رف + مخزن عام، بيع بوصل PDF، توريد، دينار/أورو، رمز حماية الأسعار، نسخ احتياطي']}];
+const BRANDS=['Renault','Peugeot','Citroën','Dacia','Hyundai','Kia','Toyota','Volkswagen','Seat','Skoda','Fiat','Chevrolet','Suzuki','Nissan','Ford','Opel','Mercedes','BMW','Audi','Mitsubishi','Mazda','Honda','Isuzu','Chery','Geely','Iveco','Mixte / عام'];
+const SYN=[
+['فلتر زيت','فلتر الزيت','filtre a huile','filtre huile','oil filter'],
+['فلتر هواء','فلتر الهواء','filtre a air','filtre air'],
+['فلتر وقود','فلتر مازوت','فلتر بنزين','filtre a carburant','filtre gasoil','filtre carburant'],
+['فلتر مكيف','فلتر المكيف','فلتر مقصورة','filtre habitacle','filtre pollen'],
+['بلاكات','بلاكيت','بلاكة','plaquette','plaquettes','plaquette frein','plaquettes de frein','تيل فرامل'],
+['قرص فرامل','اقراص فرامل','disque','disques','disque frein','disques de frein'],
+['بوجي','بوجيات','شمعة','شمعات','bougie','bougies'],
+['بطارية','بطاريه','batterie'],
+['مساعد','مساعدات','ماص صدمات','amortisseur','amortisseurs'],
+['كوروا','سير توقيت','سير التوقيت','courroie','courroie de distribution','kit distribution','kit courroie'],
+['سير ملحقات','سير الدينامو','courroie accessoire','courroie accessoires','courroie alternateur'],
+['رولمان','رولمون','roulement','roulements'],
+['رادياتور','راديتور','radiateur'],
+['طرمبة ماء','مضخة ماء','pompe a eau'],
+['طرمبة وقود','مضخة وقود','pompe a carburant','pompe essence','pompe gasoil'],
+['كلاتش','دبرياج','طقم كلاتش','embrayage','kit embrayage'],
+['فانوس','فنار','مصباح','phare','phares','optique'],
+['فيو','فيوه','feu arriere','feux arriere','feu'],
+['دينامو','alternateur'],
+['ديمارور','مارش','demarreur'],
+['سيلانسيو','كاتم صوت','silencieux','echappement','pot echappement'],
+['روتيل','rotule','rotules'],
+['بييات','بيات','biellette','biellettes'],
+['مثلث','triangle','bras de suspension'],
+['كاردان','cardan','cardans'],
+['انجكتور','حاقن','injecteur','injecteurs'],
+['جوان كولاس','جوان رأس','joint de culasse','joint culasse'],
+['تيربو','turbo','turbocompresseur'],
+['ترموستات','thermostat'],
+['حساس','capteur','sonde'],
+['مساحات','مسّاحات','essuie glace','essuie-glace','balai essuie glace'],
+['مرآة','مراية','رتروفيزور','retroviseur','miroir'],
+['صدام','pare choc','pare-choc','pare chocs'],
+['زيت محرك','huile moteur','huile'],
+['سائل تبريد','liquide de refroidissement','liquide refroidissement','antigel'],
+['سائل فرامل','liquide de frein','liquide frein'],
+['مكيف','كليماتيزور','compresseur clim','climatisation','clim'],
+['دعامة محرك','سابور','support moteur','silent bloc','silentbloc'],
+['عمود مرفقي','فيلبروكان','vilebrequin'],
+['طقم فرامل خلفي','mâchoires','machoires','segments de frein','segment frein']
+];
+const def=()=>({v:1,parts:[],sales:[],sups:[],cart:[],cm:{cust:'',note:''},seq:{inv:0},set:{shop:'',addr:'',phone:'',foot:'شكراً لثقتكم · Merci de votre confiance',cur:'DZD',rate:240,rateDate:'',pin:'',rec:'',theme:'dark',low:2,lastBackup:0,rateSet:false}});
+let D=def(),UNLOCK=false,CUR='search',FLT='all',SN=80,FN=80,HT='sales',FT='o',STF={loc:'all',brand:'',type:'',low:false,sort:'upd',q:''};
+const HC=new Map();
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+const nf=n=>'⁦'+Number(n||0).toLocaleString('fr-FR',{maximumFractionDigits:2}).replace(/[  ]/g,' ')+'⁩';
+const pad=n=>String(n).padStart(2,'0');
+const fd=t=>{const d=new Date(t);return pad(d.getDate())+'/'+pad(d.getMonth()+1)+'/'+d.getFullYear()};
+const ft=t=>{const d=new Date(t);return pad(d.getHours())+':'+pad(d.getMinutes())};
+const iso=t=>{const d=new Date(t);return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())};
+const gp=id=>D.parts.find(p=>p.id===id);
+const tot=p=>(+p.qs||0)+(+p.qw||0);
+const canSee=()=>!D.set.pin||UNLOCK;
+function LD(){
+  try{const r=localStorage.getItem(KEY);D=r?JSON.parse(r):def()}catch(e){D=def()}
+  const d=def();for(const k in d)if(D[k]===undefined)D[k]=d[k];
+  for(const k in d.set)if(D.set[k]===undefined)D.set[k]=d.set[k];
+}
+function SD(){HC.clear();try{localStorage.setItem(KEY,JSON.stringify(D))}catch(e){toast('⚠️ الذاكرة ممتلئة — خذ نسخة احتياطية الآن','e')}}
+function toast(m,t){const e=document.createElement('div');e.className='ts'+(t==='e'?' e':'');e.textContent=m;$('#toasts').appendChild(e);setTimeout(()=>e.remove(),2600)}
+
+/* ================= العملة ================= */
+const isE=()=>D.set.cur==='EUR';
+const rate=()=>+D.set.rate>0?+D.set.rate:1;
+function money(dzd){return isE()?nf(Math.round(dzd/rate()*100)/100)+' €':nf(Math.round(dzd))+' دج'}
+function fp(el,dzd){const d=isE()?String(Math.round(dzd/rate()*100)/100):String(Math.round(dzd));el.value=d;el.dataset.o=dzd;el.dataset.d=d}
+function rp(el){const v=parseFloat(String(el.value).replace(',','.'))||0;if(el.dataset.o!==undefined&&el.value===el.dataset.d)return +el.dataset.o;return isE()?v*rate():v}
+const cu=()=>isE()?'€':'دج';
+function togCur(){D.set.cur=isE()?'DZD':'EUR';SD();rAll();toast(isE()?'العرض بالأورو (1€ = '+nf(rate())+' دج)':'العرض بالدينار الجزائري')}
+function rateStale(){if(!isE())return false;const t=D.set.rateDate?new Date(D.set.rateDate).getTime():0;return !t||Date.now()-t>7*864e5}
+
+/* ================= البحث الذكي (عربي/فرنسي) ================= */
+function nz(s){return String(s||'').toLowerCase().normalize('NFD').replace(/[̀-ًͯ-ٰٟـ]/g,'').replace(/[أإآٱ]/g,'ا').replace(/ى/g,'ي').replace(/ة/g,'ه').replace(/[^\p{L}\p{N}\s.\-\/]/gu,' ').replace(/\s+/g,' ').trim()}
+const nr=s=>nz(s).replace(/[\s.\-\/]/g,'');
+const rx=s=>s.replace(/[.*+?^${}()|[\]\\\-\/]/g,'\\$&');
+const SYNR=SYN.map(g=>g.map(nz));
+const stripAl=t=>t.length>4&&t.startsWith('ال')?t.slice(2):t;
+function expand(nq){
+  const alts=new Set([nq]);let n=0;
+  for(const g of SYNR){
+    for(const ph of g){
+      const re=new RegExp('(^| )'+rx(ph)+'( |$)');
+      if(re.test(nq)){g.forEach(o=>{if(o!==ph)alts.add(nq.replace(re,(m,a,b)=>a+o+b))});n++;break}
+    }
+    if(n>=3)break;
+  }
+  return [...alts];
+}
+function hay(p){let h=HC.get(p.id);if(!h){const s=nz([p.name,p.ref,p.brand,p.models,p.shelf,p.note].join(' '));h={s,c:s.replace(/[\s.\-\/]/g,''),r:nr(p.ref)};HC.set(p.id,h)}return h}
+function srch(q,list){
+  const nq=nz(q).split(' ').filter(Boolean).map(stripAl).join(' ');
+  if(!nq)return list.slice();
+  const alts=expand(nq).map(a=>a.split(' ').filter(Boolean));
+  const out=[];
+  for(const p of list){
+    const h=hay(p);let sc=0;
+    for(const a of alts){
+      const ok=a.every(t=>{const tc=t.replace(/[.\-\/]/g,'');return h.s.includes(t)||((/\d/.test(t)||t.length>=4)&&h.c.includes(tc))});
+      if(ok){const ex=a.some(t=>h.r&&h.r===t.replace(/[.\-\/]/g,''));const pr=a.some(t=>h.r&&t.length>=3&&h.r.includes(t.replace(/[.\-\/]/g,'')));sc=Math.max(sc,ex?3:pr?2:1)}
+    }
+    if(sc)out.push([p,sc]);
+  }
+  out.sort((x,y)=>(y[1]-x[1])||((tot(y[0])>0)-(tot(x[0])>0)));
+  return out.map(x=>x[0]);
+}
+
+/* ================= الملاحة والطبقات ================= */
+const SCRS=['search','sell','stock','hist','set'];
+function go(n){
+  CUR=n;SCRS.forEach(s=>{$('#s-'+s).classList.toggle('on',s===n);$('#n-'+s).classList.toggle('on',s===n)});
+  $('#fab').classList.toggle('on',n==='search'||n==='stock');
+  rCur();
+}
+function rCur(){({search:rS,sell:rCart,stock:rStk,hist:rHist,set:rSet})[CUR]();hdrs()}
+function rAll(){rCur();bdg()}
+function hdrs(){
+  const lk=D.set.pin?(UNLOCK?'🔓':'🔒'):'🔓';
+  $$('[id^=b-lock-]').forEach(b=>{b.textContent=lk;b.classList.toggle('on',!!D.set.pin&&UNLOCK)});
+  $$('[id^=b-cur-]').forEach(b=>{b.textContent=isE()?'€':'DA';b.classList.toggle('on',isE())});
+}
+function bdg(){const n=D.cart.reduce((a,c)=>a+c.qty,0);const b=$('#cbd');b.textContent=n;b.classList.toggle('on',n>0)}
+const OVS=[];let SKIP=0,HIST=false;
+function ov(id){
+  const e=$('#'+id);if(e.classList.contains('on'))return;
+  e.classList.add('on');
+  if(!HIST){history.pushState({ov:1},'');HIST=true}
+  OVS.push(id);
+}
+function cl(id){
+  const e=$('#'+id);if(!e.classList.contains('on'))return;
+  e.classList.remove('on');
+  const i=OVS.lastIndexOf(id);if(i>=0)OVS.splice(i,1);
+  if(!OVS.length)setTimeout(()=>{if(!OVS.length&&HIST){HIST=false;SKIP++;history.back()}},0);
+}
+window.addEventListener('popstate',()=>{
+  if(SKIP>0){SKIP--;return}
+  HIST=false;
+  if(OVS.length){
+    const id=OVS.pop();$('#'+id).classList.remove('on');
+    if(OVS.length){history.pushState({ov:1},'');HIST=true}
+  }
+});
+document.addEventListener('visibilitychange',()=>{if(document.hidden&&UNLOCK&&D.set.pin){UNLOCK=false;rAll()}});
+function ask(msg,ok,danger,noCancel){
+  return new Promise(res=>{
+    const b=$('#ak-b');
+    b.innerHTML=`<div style="font-size:14px;line-height:1.8;margin-bottom:14px;white-space:pre-line">${esc(msg)}</div><div class="row">${noCancel?'':'<button class="btn" id="ak-n">إلغاء</button>'}<button class="btn ${danger?'btn-r':'btn-g'}" id="ak-y">${esc(ok||'تأكيد')}</button></div>`;
+    ov('ov-ask');
+    const fin=v=>{cl('ov-ask');res(v)};
+    $('#ak-y').onclick=()=>fin(true);
+    if(!noCancel)$('#ak-n').onclick=()=>fin(false);
+  });
+}
+
+/* ================= شاشة البحث ================= */
+const FCH=[['all','الكل'],['o','أصلية'],['c','مقلدة'],['in','متوفر'],['shelf','في الرف'],['out','نافد']];
+function applyFlt(L,f){
+  if(f==='o')return L.filter(p=>p.type==='o');
+  if(f==='c')return L.filter(p=>p.type==='c');
+  if(f==='in')return L.filter(p=>tot(p)>0);
+  if(f==='shelf')return L.filter(p=>p.qs>0);
+  if(f==='out')return L.filter(p=>tot(p)===0);
+  return L;
+}
+function cardH(p){
+  const t=tot(p),lo=t===0?'r':t<=p.min?'y':'g',see=canSee();
+  return `<div class="card pc ${lo}" onclick="openPart('${p.id}')">
+  <div><div class="pn">${esc(p.name)}</div><div class="pr">${esc(p.ref)}</div><div class="pv">${esc([p.brand,p.models].filter(Boolean).join(' · '))}</div></div>
+  <div><div class="pp">${money(p.sell)}</div><div class="pq ${lo}">${t>0?t+' قطعة':'نافد'}</div></div>
+  <div class="pc3"><span class="bd ${p.type}">${p.type==='o'?'أصلية · Origine':'مقلدة · Adaptable'}</span>${p.shelf?`<span class="bd sf">📍 ${esc(p.shelf)}</span>`:''}<span class="bd">رف ${p.qs} · مخزن ${p.qw}</span>${see?`<span class="bd bz">شراء ${money(p.buy)} · ربح ${money(p.sell-p.buy)}</span>`:''}</div></div>`;
+}
+function emptyH(){return `<div class="emp">📦<br>لا توجد قطع بعد.<br>أضف أول قطعة، أو جرّب التطبيق ببيانات تجريبية.<br><button class="btn btn-g" onclick="addPart()">+ قطعة جديدة</button> <button class="btn" onclick="loadDemo()">بيانات تجريبية</button></div>`}
+function bannerH(){
+  let h='';
+  const lb=D.set.lastBackup,old=!lb||Date.now()-lb>7*864e5;
+  if(D.parts.length&&old)h+=`<div class="bnr"><span>💾 لم تأخذ نسخة احتياطية منذ أكثر من 7 أيام</span><button class="btn btn-s" onclick="expBackup()">نسخ الآن</button></div>`;
+  if(rateStale())h+=`<div class="bnr"><span>💶 حدّث سعر الأورو (السكوار) لهذا اليوم</span><button class="btn btn-s" onclick="go('set');setTimeout(()=>sgOpen('sg-cur'),50)">تحديث</button></div>`;
+  return h;
+}
+function rS(){
+  const ch=$('#fch');
+  ch.innerHTML=FCH.map(c=>`<button class="ch ${FLT===c[0]?'on':''}" onclick="FLT='${c[0]}';SN=80;rS()">${c[1]}</button>`).join('');
+  const q=$('#q').value,out=$('#res');
+  if(!D.parts.length){out.innerHTML=emptyH();return}
+  let L=srch(q,D.parts);
+  if(!nz(q))L.sort((a,b)=>(b.ts||0)-(a.ts||0));
+  L=applyFlt(L,FLT);
+  if(!L.length){out.innerHTML=bannerH()+`<div class="emp">لا توجد نتيجة${q?' لـ «'+esc(q)+'»':''}.<br><button class="btn btn-g" onclick="addPart($('#q').value)">+ إضافة هذه القطعة</button></div>`;return}
+  out.innerHTML=bannerH()+`<div class="cnt">${L.length} نتيجة</div>`+L.slice(0,SN).map(cardH).join('')+(L.length>SN?`<div class="emp" style="padding:10px"><button class="btn" onclick="SN+=80;rS()">عرض المزيد (${L.length-SN})</button></div>`:'');
+}
+
+/* ================= بطاقة القطعة ================= */
+function openPart(id){
+  const p=gp(id);if(!p)return;
+  const t=tot(p),see=canSee();
+  $('#pt-t').textContent=p.name;
+  const mv=[...D.sales.filter(s=>!s.void&&s.items.some(i=>i.pid===id)).map(s=>({ts:s.ts,k:'بيع',q:s.items.filter(i=>i.pid===id).reduce((a,i)=>a+i.qty,0),n:'N° '+String(s.no).padStart(5,'0')})),
+            ...D.sups.filter(s=>s.pid===id).map(s=>({ts:s.ts,k:s.open?'رصيد افتتاحي':'توريد',q:s.qty,n:s.sup||''}))].sort((a,b)=>b.ts-a.ts).slice(0,5);
+  $('#pt-b').innerHTML=`
+  <div class="kv"><span>المرجع · Réf</span><b class="ltr">${esc(p.ref)||'—'}</b></div>
+  <div class="kv"><span>السيارة</span><b>${esc([p.brand,p.models].filter(Boolean).join(' · '))||'—'}</b></div>
+  <div class="kv"><span>النوع</span><b><span class="bd ${p.type}">${p.type==='o'?'أصلية · Origine':'مقلدة · Adaptable'}</span></b></div>
+  <div class="kv"><span>الرف</span><b>${p.shelf?'📍 '+esc(p.shelf):'—'}</b></div>
+  <div class="kv"><span>في الرف</span><b>${p.qs}</b></div>
+  <div class="kv"><span>في المخزن العام</span><b>${p.qw}</b></div>
+  <div class="kv"><span>المجموع</span><b style="color:${t===0?'var(--red)':t<=p.min?'var(--gold)':'var(--g)'}">${t}${t<=p.min&&t>0?' · منخفض':''}${t===0?' · نافد':''}</b></div>
+  <div class="kv"><span>سعر البيع</span><b style="color:var(--g)">${money(p.sell)}</b></div>
+  ${see?`<div class="kv"><span>سعر الشراء</span><b>${money(p.buy)}</b></div><div class="kv"><span>الربح للقطعة</span><b style="color:var(--gold)">${money(p.sell-p.buy)}</b></div>`:`<div class="kv"><span>سعر الشراء</span><b>🔒 مخفي</b></div>`}
+  ${p.note?`<div class="kv"><span>ملاحظات</span><b>${esc(p.note)}</b></div>`:''}
+  <label class="lb">نقل بين المخزن والرف · Transfert</label>
+  <div class="row"><input id="mv-q" class="in" type="number" inputmode="numeric" min="1" value="1" style="flex:.5"><button class="btn" onclick="mvStock('${id}','ws')">⬆ مخزن ← رف</button><button class="btn" onclick="mvStock('${id}','sw')">⬇ رف ← مخزن</button></div>
+  ${mv.length?`<label class="lb">آخر الحركات</label>${mv.map(m=>`<div class="kv"><span>${fd(m.ts)} · ${m.k}</span><b>${m.q}${m.n?' · '+esc(m.n):''}</b></div>`).join('')}`:''}
+  <div class="row" style="margin-top:14px"><button class="btn btn-g" onclick="addCart('${id}');cl('ov-part')">🛒 بيع</button><button class="btn" onclick="openSupply('${id}')">📥 توريد</button><button class="btn" onclick="openForm('${id}')">✏️ تعديل</button></div>`;
+  ov('ov-part');
+}
+function mvStock(id,dir){
+  const p=gp(id),q=parseInt($('#mv-q').value)||0;if(!p||q<1)return;
+  if(dir==='ws'){if(p.qw<q){toast('الكمية في المخزن '+p.qw+' فقط','e');return}p.qw-=q;p.qs+=q}
+  else{if(p.qs<q){toast('الكمية في الرف '+p.qs+' فقط','e');return}p.qs-=q;p.qw+=q}
+  p.ts=Date.now();SD();toast('تم النقل');openPart(id);rAll();
+}
+
+/* ================= نموذج القطعة ================= */
+function dls(){
+  const bs=[...new Set([...BRANDS,...D.parts.map(p=>p.brand).filter(Boolean)])];
+  $('#dl-brand').innerHTML=bs.map(b=>`<option value="${esc(b)}">`).join('');
+  $('#dl-shelf').innerHTML=[...new Set(D.parts.map(p=>p.shelf).filter(Boolean))].sort().map(b=>`<option value="${esc(b)}">`).join('');
+}
+function setT(t){FT=t;$$('#f-seg button').forEach(b=>b.classList.toggle('on',b.dataset.t===t))}
+function mgn(){
+  const el=$('#f-mg');if(!el||!canSee())return;
+  const b=rp($('#f-buy')),s=rp($('#f-sell'));
+  if(!(b>0)&&!(s>0)){el.textContent='';return}
+  const d=s-b;el.className='mg'+(d<0?' n':'');
+  el.textContent='الربح للقطعة: '+money(d)+(b>0?' ('+Math.round(d/b*100)+'%)':'');
+}
+function openForm(id,pre){
+  dls();
+  const p=id?gp(id):null,see=canSee();
+  $('#fm-t').textContent=p?'تعديل القطعة':'قطعة جديدة';
+  $('#fm-b').innerHTML=`
+  <label class="lb">الاسم · Désignation *</label><input id="f-name" class="in" placeholder="مثال: فلتر زيت / Filtre à huile" autocomplete="off">
+  <label class="lb">المرجع · Référence</label><input id="f-ref" class="in ltr" placeholder="مثال: 8200768913" autocomplete="off">
+  <div class="g2"><div><label class="lb">السيارة · Marque</label><input id="f-brand" class="in" list="dl-brand" placeholder="Renault"></div>
+  <div><label class="lb">الموديلات / السنوات</label><input id="f-models" class="in" placeholder="Clio 3 · 2005-2012"></div></div>
+  <label class="lb">النوع · Qualité</label>
+  <div class="seg" id="f-seg"><button data-t="o" onclick="setT('o')">أصلية · Origine</button><button data-t="c" onclick="setT('c')">مقلدة · Adaptable</button></div>
+  <label class="lb">الرف · Rayon</label><input id="f-shelf" class="in" list="dl-shelf" placeholder="مثال: A3">
+  <div class="g2"><div><label class="lb">الكمية في الرف</label><input id="f-qs" class="in" type="number" inputmode="numeric" min="0" value="0"></div>
+  <div><label class="lb">الكمية في المخزن العام</label><input id="f-qw" class="in" type="number" inputmode="numeric" min="0" value="0"></div></div>
+  <div class="g2"><div><label class="lb">سعر الشراء (${cu()})</label>${see?`<input id="f-buy" class="in" type="number" inputmode="decimal" min="0" oninput="mgn()">`:`<div class="in" style="color:var(--tx3)">🔒 مخفي</div>`}</div>
+  <div><label class="lb">سعر البيع (${cu()})</label><input id="f-sell" class="in" type="number" inputmode="decimal" min="0" oninput="mgn()"></div></div>
+  <div id="f-mg" class="mg"></div>
+  <label class="lb">حد التنبيه (مخزون منخفض عند ≤)</label><input id="f-min" class="in" type="number" inputmode="numeric" min="0">
+  <label class="lb">ملاحظات</label><textarea id="f-note" class="in" placeholder="اختياري"></textarea>
+  <div class="row" style="margin-top:14px">${p?`<button class="btn btn-r" style="flex:.4" onclick="delPart('${p.id}')">حذف</button>`:''}<button class="btn btn-g" onclick="saveForm('${p?p.id:''}')">حفظ</button></div>`;
+  $('#f-name').value=p?p.name:(pre||'');
+  $('#f-ref').value=p?p.ref:'';
+  $('#f-brand').value=p?p.brand:'';
+  $('#f-models').value=p?p.models:'';
+  $('#f-shelf').value=p?p.shelf:'';
+  $('#f-qs').value=p?p.qs:0;$('#f-qw').value=p?p.qw:0;
+  $('#f-min').value=p?p.min:D.set.low;
+  $('#f-note').value=p?p.note:'';
+  if(see&&$('#f-buy'))fp($('#f-buy'),p?p.buy:0),p||($('#f-buy').value='');
+  fp($('#f-sell'),p?p.sell:0);if(!p)$('#f-sell').value='';
+  setT(p?p.type:'o');mgn();
+  ov('ov-form');
+}
+function addPart(pre){openForm(null,typeof pre==='string'?pre:'')}
+async function saveForm(id){
+  const name=$('#f-name').value.trim();
+  if(!name){toast('أدخل اسم القطعة','e');$('#f-name').focus();return}
+  const ex=id?gp(id):null,see=canSee();
+  const o={name,ref:$('#f-ref').value.trim(),brand:$('#f-brand').value.trim(),models:$('#f-models').value.trim(),type:FT,shelf:$('#f-shelf').value.trim().toUpperCase(),
+    qs:Math.max(0,parseInt($('#f-qs').value)||0),qw:Math.max(0,parseInt($('#f-qw').value)||0),min:Math.max(0,parseInt($('#f-min').value)||0),
+    buy:see?Math.max(0,rp($('#f-buy'))):(ex?ex.buy:0),sell:Math.max(0,rp($('#f-sell'))),note:$('#f-note').value.trim(),ts:Date.now()};
+  if(ex){Object.assign(ex,o);SD();cl('ov-form');toast('تم الحفظ');rAll();if($('#ov-part').classList.contains('on'))openPart(id);return}
+  if(o.ref){
+    const dup=D.parts.find(p=>nr(p.ref)===nr(o.ref)&&p.type===o.type&&nz(p.brand)===nz(o.brand));
+    if(dup){const y=await ask('يوجد صنف بنفس المرجع والنوع والسيارة:\n«'+dup.name+'»\nهل تريد فتحه بدلاً من إنشاء نسخة مكررة؟','فتح الموجود');if(y){cl('ov-form');openPart(dup.id);return}}
+  }
+  const np=Object.assign({id:uid()},o);D.parts.push(np);
+  if(np.qs+np.qw>0)D.sups.push({id:uid(),ts:Date.now(),pid:np.id,name:np.name,qty:np.qs+np.qw,buy:np.buy,loc:'w',sup:'',note:'',open:true});
+  SD();cl('ov-form');toast('تمت إضافة القطعة');rAll();
+}
+async function delPart(id){
+  const p=gp(id);if(!p)return;
+  const y=await ask('حذف «'+p.name+'» نهائياً؟\n(سجل المبيعات السابقة يبقى كما هو)','حذف',true);if(!y)return;
+  D.parts=D.parts.filter(x=>x.id!==id);D.cart=D.cart.filter(c=>c.pid!==id);SD();
+  cl('ov-form');cl('ov-part');toast('تم الحذف');rAll();bdg();
+}
+
+/* ================= التوريد ================= */
+let SPID=null,SPL='w';
+function openSupply(pid){
+  SPID=pid||null;SPL='w';const p=pid?gp(pid):null,see=canSee();
+  $('#sp-b').innerHTML=`
+  ${p?`<div class="card" style="margin:0 0 6px"><div class="pn">${esc(p.name)}</div><div class="pr">${esc(p.ref)}</div><div class="pv">رف ${p.qs} · مخزن ${p.qw}</div></div>`
+     :`<label class="lb">القطعة</label><input id="sp-q" class="in" type="search" placeholder="ابحث عن القطعة..." oninput="pkRender('sp-q','sp-l',spPick)" autocomplete="off"><div class="pkl" id="sp-l" style="margin:6px 0 0"></div><div id="sp-sel"></div>`}
+  <label class="lb">الكمية المستلمة</label><input id="sp-qty" class="in" type="number" inputmode="numeric" min="1" value="1">
+  <label class="lb">أين توضع؟</label>
+  <div class="seg" id="sp-seg"><button class="on" data-l="w" onclick="spL('w')">المخزن العام</button><button data-l="s" onclick="spL('s')">الرف</button></div>
+  <div class="g2"><div><label class="lb">سعر الشراء للقطعة (${cu()})</label>${see?`<input id="sp-buy" class="in" type="number" inputmode="decimal" min="0">`:`<div class="in" style="color:var(--tx3)">🔒 مخفي</div>`}</div>
+  <div><label class="lb">سعر البيع (${cu()})</label><input id="sp-sell" class="in" type="number" inputmode="decimal" min="0"></div></div>
+  <label class="lb">المورّد</label><input id="sp-sup" class="in" placeholder="اختياري">
+  <label class="lb">ملاحظة</label><input id="sp-note" class="in" placeholder="اختياري">
+  <button class="btn btn-g btn-fw" style="margin-top:14px" onclick="saveSupply()">تأكيد التوريد</button>`;
+  if(p)spFill(p);
+  ov('ov-supply');
+}
+function spFill(p){if($('#sp-buy'))fp($('#sp-buy'),p.buy);fp($('#sp-sell'),p.sell)}
+function spL(l){SPL=l;$$('#sp-seg button').forEach(b=>b.classList.toggle('on',b.dataset.l===l))}
+function spPick(id){
+  SPID=id;const p=gp(id);$('#sp-l').innerHTML='';$('#sp-q').value='';
+  $('#sp-sel').innerHTML=`<div class="card" style="margin:8px 0 0"><div class="pn">${esc(p.name)}</div><div class="pr">${esc(p.ref)}</div><div class="pv">رف ${p.qs} · مخزن ${p.qw}</div></div>`;
+  spFill(p);
+}
+function saveSupply(){
+  const p=SPID?gp(SPID):null;if(!p){toast('اختر القطعة أولاً','e');return}
+  const q=parseInt($('#sp-qty').value)||0;if(q<1){toast('أدخل كمية صحيحة','e');return}
+  const see=canSee(),buy=see?rp($('#sp-buy')):p.buy,sell=rp($('#sp-sell'));
+  if(SPL==='s')p.qs+=q;else p.qw+=q;
+  if(see&&buy>0)p.buy=buy;if(sell>0)p.sell=sell;p.ts=Date.now();
+  D.sups.push({id:uid(),ts:Date.now(),pid:p.id,name:p.name,qty:q,buy:see?buy:p.buy,loc:SPL,sup:$('#sp-sup').value.trim(),note:$('#sp-note').value.trim()});
+  SD();cl('ov-supply');toast('تم التوريد: +'+q);rAll();if($('#ov-part').classList.contains('on'))openPart(p.id);
+}
+/* منتقي القطع المصغّر */
+function pkRender(inId,listId,cb){
+  const q=$('#'+inId).value,box=$('#'+listId);
+  if(!nz(q)){box.innerHTML='';return}
+  const L=srch(q,D.parts).slice(0,6);
+  box.innerHTML=L.length?L.map(p=>`<div class="pki" data-id="${p.id}"><span>${esc(p.name)} <span class="bd ${p.type}">${p.type==='o'?'أصلية':'مقلدة'}</span></span><small>${esc(p.ref)} · ${tot(p)}</small></div>`).join(''):`<div class="pki"><span style="color:var(--tx3)">لا نتيجة</span></div>`;
+  $$('#'+listId+' .pki[data-id]').forEach(e=>e.onclick=()=>cb(e.dataset.id));
+}
+
+/* ================= البيع ================= */
+function addCartPick(id){$('#sq').value='';$('#spk').innerHTML='';addCart(id,false);rCart()}
+function addCart(id,goS=true){
+  const p=gp(id);if(!p)return;const t=tot(p);
+  if(t<1){toast('الكمية نافدة','e');return}
+  const c=D.cart.find(x=>x.pid===id);
+  if(c){if(c.qty>=t){toast('المتوفر '+t+' فقط','e');return}c.qty++}else D.cart.push({pid:id,qty:1,price:p.sell});
+  SD();bdg();toast('أُضيفت إلى الوصل');if(goS)go('sell')
+}
+function cq(i,d){
+  const c=D.cart[i],p=gp(c.pid);if(!p)return;const n=c.qty+d;
+  if(n<1)return;if(n>tot(p)){toast('المتوفر '+tot(p)+' فقط','e');return}
+  c.qty=n;SD();rCart();bdg();
+}
+function cpr(i,el){D.cart[i].price=Math.max(0,rp(el));SD();rCart()}
+function cx(i){D.cart.splice(i,1);SD();rCart();bdg()}
+const cartTotal=()=>D.cart.reduce((a,c)=>a+c.qty*c.price,0);
+function rCart(){
+  D.cart=D.cart.filter(c=>gp(c.pid));
+  const el=$('#cart'),see=canSee();
+  if(!D.cart.length){
+    el.innerHTML=`<div class="emp">🛒<br>الوصل فارغ.<br>ابحث أعلاه عن القطعة، أو افتح قطعة من «بحث» واضغط «بيع».</div>`;
+    $('#csum').innerHTML='';return;
+  }
+  el.innerHTML=D.cart.map((c,i)=>{
+    const p=gp(c.pid),lowP=see&&c.price<p.buy;
+    return `<div class="card"><div class="cl">
+    <div><div class="nm">${esc(p.name)} <span class="bd ${p.type}">${p.type==='o'?'أصلية':'مقلدة'}</span></div><div class="rf">${esc(p.ref)}${p.shelf?' · 📍'+esc(p.shelf):''} · متوفر ${tot(p)}</div></div>
+    <button class="x" onclick="cx(${i})">✕</button>
+    <div class="qs"><button onclick="cq(${i},-1)">−</button><b>${c.qty}</b><button onclick="cq(${i},1)">+</button></div>
+    <div style="display:flex;gap:8px;align-items:center;justify-content:flex-end"><input class="in pi" id="cp-${i}" type="number" inputmode="decimal" min="0" onchange="cpr(${i},this)"><span style="font-size:11px;color:var(--tx3)">${cu()}</span></div>
+    <div style="font-size:12px;color:var(--tx2)">المجموع</div><div class="lt">${money(c.qty*c.price)}</div>
+    ${lowP?'<div class="warn">⚠ السعر أقل من سعر الشراء</div>':''}</div></div>`;
+  }).join('')+`<div class="card"><label class="lb" style="margin-top:0">اسم الزبون (اختياري)</label><input id="c-cust" class="in" value="${esc(D.cm.cust)}" oninput="D.cm.cust=this.value;SD()"><label class="lb">ملاحظة</label><input id="c-note" class="in" value="${esc(D.cm.note)}" oninput="D.cm.note=this.value;SD()"></div>`;
+  D.cart.forEach((c,i)=>fp($('#cp-'+i),c.price));
+  const T=cartTotal(),pr=D.cart.reduce((a,c)=>a+c.qty*(c.price-gp(c.pid).buy),0);
+  $('#csum').innerHTML=`<div class="tt"><small>${D.cart.reduce((a,c)=>a+c.qty,0)} قطعة${see?' · الربح '+money(pr):''}</small><b>${money(T)}</b></div><div class="row"><button class="btn" style="flex:.35" onclick="clrCart()">تفريغ</button><button class="btn btn-g" onclick="confirmSale()">✔ تأكيد البيع وإصدار الوصل</button></div>`;
+}
+async function clrCart(){if(await ask('تفريغ الوصل الحالي؟','تفريغ',true)){D.cart=[];D.cm={cust:'',note:''};SD();rCart();bdg()}}
+function confirmSale(){
+  if(!D.cart.length)return;
+  for(const c of D.cart){const p=gp(c.pid);if(!p||tot(p)<c.qty){toast('الكمية غير كافية: '+(p?p.name:''),'e');return}}
+  const items=D.cart.map(c=>{
+    const p=gp(c.pid);let s=Math.min(p.qs,c.qty),w=c.qty-s;p.qs-=s;p.qw-=w;p.ts=Date.now();
+    return {pid:p.id,name:p.name,ref:p.ref,brand:p.brand,type:p.type,qty:c.qty,price:c.price,buy:p.buy,s,w};
+  });
+  const sale={id:uid(),no:++D.seq.inv,ts:Date.now(),items,total:items.reduce((a,i)=>a+i.qty*i.price,0),cust:D.cm.cust.trim(),note:D.cm.note.trim(),cur:D.set.cur,rate:rate()};
+  D.sales.push(sale);D.cart=[];D.cm={cust:'',note:''};SD();
+  toast('تم البيع · وصل N° '+String(sale.no).padStart(5,'0'));
+  rAll();showDoc(receiptH(sale),'a5','Wasl_'+String(sale.no).padStart(5,'0'));
+}
+const saleProfit=s=>s.items.reduce((a,i)=>a+i.qty*(i.price-i.buy),0);
+function openSale(id){
+  const s=D.sales.find(x=>x.id===id);if(!s)return;
+  $('#sl-t').textContent='وصل N° '+String(s.no).padStart(5,'0');
+  $('#sl-b').innerHTML=`<div class="kv"><span>التاريخ</span><b>${fd(s.ts)} · ${ft(s.ts)}</b></div>${s.cust?`<div class="kv"><span>الزبون</span><b>${esc(s.cust)}</b></div>`:''}${s.void?`<div class="kv"><span>الحالة</span><b style="color:var(--red)">ملغى</b></div>`:''}
+  ${s.items.map(i=>`<div class="kv"><span>${esc(i.name)} ×${i.qty}</span><b>${money(i.qty*i.price)}</b></div>`).join('')}
+  <div class="kv"><span>المجموع</span><b style="color:var(--g)">${moneyS(s,s.total)}</b></div>
+  ${canSee()?`<div class="kv"><span>الربح</span><b style="color:var(--gold)">${money(saleProfit(s))}</b></div>`:''}
+  ${s.note?`<div class="kv"><span>ملاحظة</span><b>${esc(s.note)}</b></div>`:''}
+  <div class="row" style="margin-top:14px">${s.void?'':`<button class="btn btn-r" onclick="cancelSale('${s.id}')">إلغاء الوصل</button>`}<button class="btn btn-g" onclick="showDoc(receiptH(D.sales.find(x=>x.id==='${s.id}')),'a5','Wasl_${String(s.no).padStart(5,'0')}')">وصل PDF</button></div>`;
+  ov('ov-sale');
+}
+function moneyS(s,v){return s.cur==='EUR'?nf(Math.round(v/s.rate*100)/100)+' €':nf(Math.round(v))+' دج'}
+async function cancelSale(id){
+  const s=D.sales.find(x=>x.id===id);if(!s||s.void)return;
+  const y=await ask('إلغاء الوصل N° '+String(s.no).padStart(5,'0')+'؟\nستُرجع الكميات إلى الرف/المخزن تلقائياً.','إلغاء الوصل',true);if(!y)return;
+  s.items.forEach(i=>{const p=gp(i.pid);if(p){p.qs+=i.s;p.qw+=i.w;p.ts=Date.now()}});
+  s.void=true;s.voidTs=Date.now();SD();cl('ov-sale');toast('أُلغي الوصل وأُرجعت الكميات');rAll();
+}
+
+/* ================= المخزن العام ================= */
+function rStk(){
+  const el=$('#stk');
+  if(!D.parts.length){el.innerHTML=emptyH();return}
+  const see=canSee(),all=D.parts;
+  const units=all.reduce((a,p)=>a+tot(p),0),low=all.filter(p=>tot(p)>0&&tot(p)<=p.min).length,out=all.filter(p=>tot(p)===0).length;
+  const vs=all.reduce((a,p)=>a+tot(p)*p.sell,0),vb=all.reduce((a,p)=>a+tot(p)*p.buy,0);
+  let L=srch(STF.q,all);
+  if(STF.loc==='shelf')L=L.filter(p=>p.qs>0);if(STF.loc==='store')L=L.filter(p=>p.qw>0);
+  if(STF.brand)L=L.filter(p=>p.brand===STF.brand);if(STF.type)L=L.filter(p=>p.type===STF.type);
+  if(STF.low)L=L.filter(p=>tot(p)<=p.min);
+  if(!nz(STF.q)){
+    if(STF.sort==='name')L.sort((a,b)=>a.name.localeCompare(b.name,'ar'));
+    else if(STF.sort==='qty')L.sort((a,b)=>tot(a)-tot(b));
+    else L.sort((a,b)=>(b.ts||0)-(a.ts||0));
+  }
+  const brands=[...new Set(all.map(p=>p.brand).filter(Boolean))].sort();
+  const sel=(k,opts)=>`<select class="in" onchange="STF.${k}=this.value;FN=80;rStk()" style="padding:9px">${opts.map(o=>`<option value="${esc(o[0])}" ${String(STF[k])===o[0]?'selected':''}>${esc(o[1])}</option>`).join('')}</select>`;
+  el.innerHTML=`<div class="kpis" style="margin-top:10px">
+    <div class="kp"><b>${all.length}</b><span>عدد الأصناف</span></div><div class="kp"><b>${nf(units)}</b><span>مجموع القطع</span></div>
+    <div class="kp w"><b>${low}</b><span>مخزون منخفض</span></div><div class="kp d"><b>${out}</b><span>نافد</span></div>
+    <div class="kp"><b>${money(vs)}</b><span>قيمة المخزون (بيع)</span></div><div class="kp"><b>${see?money(vb):'🔒'}</b><span>قيمة المخزون (شراء)</span></div></div>
+    <div class="sb" style="padding-top:2px"><input class="in" type="search" placeholder="🔍 بحث في المخزن" value="${esc(STF.q)}" oninput="STF.q=this.value;FN=80;rStkList()" id="stq"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 12px 8px">
+      ${sel('loc',[['all','كل الأماكن'],['shelf','في الرف'],['store','في المخزن']])}
+      ${sel('type',[['','كل الأنواع'],['o','أصلية'],['c','مقلدة']])}
+      ${sel('brand',[['','كل السيارات'],...brands.map(b=>[b,b])])}
+      ${sel('sort',[['upd','الأحدث'],['name','الاسم'],['qty','الأقل كمية']])}
+    </div>
+    <div class="chips" style="padding-top:0"><button class="ch ${STF.low?'on':''}" onclick="STF.low=!STF.low;rStk()">⚠ المنخفض فقط</button><button class="ch" onclick="openSupply()">📥 توريد</button><button class="ch" onclick="openRep()">📄 جرد PDF</button></div>
+    <div id="stl"></div>`;
+  rStkList(L);
+}
+function rStkList(L){
+  if(!L){
+    L=srch(STF.q,D.parts);
+    if(STF.loc==='shelf')L=L.filter(p=>p.qs>0);if(STF.loc==='store')L=L.filter(p=>p.qw>0);
+    if(STF.brand)L=L.filter(p=>p.brand===STF.brand);if(STF.type)L=L.filter(p=>p.type===STF.type);if(STF.low)L=L.filter(p=>tot(p)<=p.min);
+  }
+  $('#stl').innerHTML=`<div class="cnt">${L.length} صنف</div>`+(L.length?L.slice(0,FN).map(cardH).join(''):'<div class="emp">لا توجد نتائج</div>')+(L.length>FN?`<div class="emp" style="padding:10px"><button class="btn" onclick="FN+=80;rStkList()">عرض المزيد (${L.length-FN})</button></div>`:'');
+}
+
+/* ================= السجل ================= */
+function dayLbl(t){const n=new Date(),s=new Date(n.getFullYear(),n.getMonth(),n.getDate()).getTime();return t>=s?'اليوم · '+fd(t):t>=s-864e5?'أمس · '+fd(t):fd(t)}
+function rHist(){
+  const el=$('#his'),see=canSee();
+  const n=new Date(),s0=new Date(n.getFullYear(),n.getMonth(),n.getDate()).getTime();
+  const td=D.sales.filter(s=>!s.void&&s.ts>=s0);
+  const T=td.reduce((a,s)=>a+s.total,0),P=td.reduce((a,s)=>a+saleProfit(s),0);
+  let h=`<div class="kpis" style="margin-top:10px"><div class="kp"><b>${td.length}</b><span>وصولات اليوم</span></div><div class="kp"><b>${money(T)}</b><span>مبيعات اليوم</span></div>${see?`<div class="kp w" style="grid-column:1/-1"><b>${money(P)}</b><span>ربح اليوم</span></div>`:''}</div>
+  <div class="row" style="padding:0 12px 8px"><button class="btn" onclick="openRep()">📄 تقارير PDF</button></div>
+  <div class="chips"><div class="seg" style="width:100%"><button class="${HT==='sales'?'on':''}" onclick="HT='sales';rHist()">المبيعات</button><button class="${HT==='sups'?'on':''}" onclick="HT='sups';rHist()">التوريد</button></div></div>`;
+  const L=(HT==='sales'?D.sales:D.sups).slice().sort((a,b)=>b.ts-a.ts).slice(0,150);
+  if(!L.length)h+=`<div class="emp">لا توجد عمليات بعد</div>`;
+  let last='';
+  for(const x of L){
+    const dl=dayLbl(x.ts);if(dl!==last){h+=`<div class="day">${dl}</div>`;last=dl}
+    if(HT==='sales'){
+      h+=`<div class="card sc ${x.void?'v':''}" onclick="openSale('${x.id}')"><div><div class="a">N° ${String(x.no).padStart(5,'0')} ${x.void?'<span class="bd rd">ملغى</span>':''}</div><div class="b">${ft(x.ts)} · ${x.items.length} صنف${x.cust?' · '+esc(x.cust):''}</div></div><div class="t">${moneyS(x,x.total)}${see&&!x.void?`<div style="font-size:11px;color:var(--gold)">ربح ${money(saleProfit(x))}</div>`:''}</div></div>`;
+    }else{
+      h+=`<div class="card sc" style="cursor:default"><div><div class="a">${esc(x.name)}</div><div class="b">${ft(x.ts)} · ${x.open?'رصيد افتتاحي':'توريد'} · ${x.loc==='s'?'الرف':'المخزن'}${x.sup?' · '+esc(x.sup):''}</div></div><div class="t">+${x.qty}${see&&x.buy?`<div style="font-size:11px;color:var(--tx2)">${money(x.buy)} / قطعة</div>`:''}</div></div>`;
+    }
+  }
+  el.innerHTML=h;
+}
+
+/* ================= الإعدادات ================= */
+function sgOpen(id){const e=document.getElementById(id);if(e)e.classList.add('on')}
+function sgT(id){document.getElementById(id).classList.toggle('on')}
+let SGO={};
+function rSet(){
+  const s=D.set,el=$('#set');
+  const keep=$$('#set .sg.on').map(e=>e.id);
+  const old=el.scrollTop;
+  el.innerHTML=`
+  <div class="sg" id="sg-shop"><div class="sgh" onclick="sgT('sg-shop')">🏪 معلومات المحل (تظهر في الوصل)<i>▾</i></div><div class="sgb">
+    <label class="lb">اسم المحل</label><input id="st-shop" class="in" value="${esc(s.shop)}" onchange="D.set.shop=this.value.trim();SD()">
+    <label class="lb">العنوان</label><input id="st-addr" class="in" value="${esc(s.addr)}" onchange="D.set.addr=this.value.trim();SD()">
+    <label class="lb">الهاتف</label><input id="st-ph" class="in ltr" value="${esc(s.phone)}" onchange="D.set.phone=this.value.trim();SD()">
+    <label class="lb">عبارة أسفل الوصل</label><input id="st-ft" class="in" value="${esc(s.foot)}" onchange="D.set.foot=this.value.trim();SD()">
+    <label class="lb">حد التنبيه الافتراضي للمخزون</label><input id="st-low" class="in" type="number" inputmode="numeric" min="0" value="${s.low}" onchange="D.set.low=Math.max(0,parseInt(this.value)||0);SD()">
+  </div></div>
+  <div class="sg" id="sg-cur"><div class="sgh" onclick="sgT('sg-cur')">💶 العملة وسعر الأورو<i>▾</i></div><div class="sgb">
+    <label class="lb">عملة العرض</label>
+    <div class="seg"><button class="${!isE()?'on':''}" onclick="if(isE())togCur()">دينار جزائري (دج)</button><button class="${isE()?'on':''}" onclick="if(!isE())togCur()">أورو (€)</button></div>
+    <label class="lb">سعر الأورو بالدينار (سعر السكوار) · 1 € =</label>
+    <div class="row"><input id="st-rate" class="in" type="number" inputmode="decimal" min="1" value="${s.rate}"><button class="btn btn-g" style="flex:.45" onclick="saveRate()">حفظ</button></div>
+    <div class="hint">آخر تحديث: ${s.rateDate?fd(s.rateDate):'لم يُحدَّث بعد'}. السعر يُدخل يدوياً لأن سعر السوق الموازي يتغير يومياً. كل الأسعار تُخزَّن بالدينار، والأورو عرض فقط بهذا السعر.</div>
+  </div></div>
+  <div class="sg" id="sg-sec"><div class="sgh" onclick="sgT('sg-sec')">🔒 حماية أسعار الشراء والأرباح<i>▾</i></div><div class="sgb">
+    <div class="hint" style="margin-top:0">${s.pin?'الرمز مفعّل: أسعار الشراء والأرباح مخفية عن الزبون والعامل حتى إدخال الرمز، وتُقفل تلقائياً عند الخروج من التطبيق.':'غير مفعّل: أسعار الشراء والأرباح ظاهرة دائماً.'} هذه حماية للعرض فقط، وليست تشفيراً للبيانات.</div>
+    <div class="row" style="margin-top:10px">${s.pin?`<button class="btn" onclick="openPin('change')">تغيير الرمز</button><button class="btn btn-r" onclick="openPin('remove')">إلغاء الرمز</button>`:`<button class="btn btn-g" onclick="openPin('set')">تعيين رمز</button>`}</div>
+  </div></div>
+  <div class="sg" id="sg-bk"><div class="sgh" onclick="sgT('sg-bk')">💾 النسخ الاحتياطي<i>▾</i></div><div class="sgb">
+    <div class="hint" style="margin-top:0">آخر نسخة: ${s.lastBackup?fd(s.lastBackup)+' '+ft(s.lastBackup):'لا توجد'}. البيانات محفوظة على هذا الهاتف فقط، فخذ نسخة أسبوعياً وأرسلها لنفسك.</div>
+    <div class="row" style="margin-top:10px"><button class="btn btn-g" onclick="expBackup()">تصدير نسخة</button><button class="btn" onclick="$('#imp').click()">استيراد نسخة</button></div>
+    <input id="imp" type="file" accept=".json,application/json" style="display:none" onchange="impBackup(this)">
+  </div></div>
+  <div class="sg" id="sg-th"><div class="sgh" onclick="sgT('sg-th')">🎨 المظهر<i>▾</i></div><div class="sgb">
+    <div class="seg"><button class="${s.theme!=='light'?'on':''}" onclick="setTheme('dark')">داكن</button><button class="${s.theme==='light'?'on':''}" onclick="setTheme('light')">فاتح</button></div>
+  </div></div>
+  <div class="sg" id="sg-data"><div class="sgh" onclick="sgT('sg-data')">🧪 البيانات<i>▾</i></div><div class="sgb">
+    <div class="row"><button class="btn" onclick="loadDemo()">تحميل بيانات تجريبية</button><button class="btn" onclick="rmDemo()">حذف التجريبية</button></div>
+    <button class="btn btn-r btn-fw" style="margin-top:8px" onclick="resetAll()">مسح كل البيانات</button>
+  </div></div>
+  <div class="sg" id="sg-guide"><div class="sgh" onclick="sgT('sg-guide')">📖 دليل الاستعمال<i>▾</i></div><div class="sgb"><div class="tl">
+    <b>بحث:</b> اكتب بالعربية أو الفرنسية (فلتر زيت = filtre à huile)، أو المرجع، أو السيارة.<br>
+    <b>بيع:</b> افتح القطعة ← «بيع» ← عدّل الكمية/السعر ← «تأكيد البيع». يُخصم من الرف أولاً ثم المخزن، ويصدر وصل PDF.<br>
+    <b>توريد:</b> من القطعة أو من «المخزن» ← «توريد»؛ يُحدَّث سعر الشراء بآخر سعر.<br>
+    <b>نقل:</b> من بطاقة القطعة بين المخزن والرف.<br>
+    <b>إلغاء وصل:</b> من «السجل» ← الوصل ← «إلغاء»؛ تعود الكمية تلقائياً.<br>
+    <b>الأورو:</b> زر DA/€ أعلى الشاشة؛ حدّث سعر السكوار من الإعدادات.<br>
+    <b>PDF:</b> «السجل» أو «المخزن» ← تقارير/جرد.
+  </div></div></div>
+  <div class="sg" id="sg-about"><div class="sgh" onclick="sgT('sg-about')">ℹ️ حول التطبيق<i>▾</i></div><div class="sgb">
+    <div class="kv"><span>التطبيق</span><b>المعتمد · Al Moutamad</b></div>
+    <div class="kv"><span>الإصدار</span><b>v${APP_VERSION}</b></div>
+    <div class="kv"><span>الأصناف / الوصولات</span><b>${D.parts.length} / ${D.sales.length}</b></div>
+    ${CHANGELOG.map(c=>`<div class="hint"><b style="color:var(--g)">v${c.v}</b> · ${c.d}<br>${c.items.map(esc).join('<br>')}</div>`).join('')}
+  </div></div>`;
+  keep.forEach(sgOpen);el.scrollTop=old;
+}
+function saveRate(){const v=parseFloat($('#st-rate').value);if(!(v>0)){toast('أدخل سعراً صحيحاً','e');return}D.set.rate=v;D.set.rateDate=Date.now();SD();toast('حُفظ: 1 € = '+nf(v)+' دج');rAll()}
+function setTheme(t){D.set.theme=t;SD();document.body.classList.toggle('light',t==='light');$('meta[name=theme-color]').content=t==='light'?'#eef1f6':'#070b12';rSet()}
+function expBackup(){
+  const blob=new Blob([JSON.stringify(D)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='almoutamad_backup_'+iso(Date.now())+'.json';
+  document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500);
+  D.set.lastBackup=Date.now();SD();toast('تم تصدير النسخة الاحتياطية');rAll();
+}
+function impBackup(inp){
+  const f=inp.files[0];if(!f)return;const r=new FileReader();
+  r.onload=async()=>{
+    try{
+      const j=JSON.parse(r.result);if(!j||!Array.isArray(j.parts)||!Array.isArray(j.sales))throw 0;
+      const y=await ask('استيراد النسخة سيستبدل كل البيانات الحالية:\n'+j.parts.length+' صنف · '+j.sales.length+' وصل\nمتابعة؟','استيراد',true);
+      if(!y){inp.value='';return}
+      D=j;const d=def();for(const k in d)if(D[k]===undefined)D[k]=d[k];for(const k in d.set)if(D.set[k]===undefined)D.set[k]=d.set[k];
+      UNLOCK=false;SD();document.body.classList.toggle('light',D.set.theme==='light');toast('تم الاستيراد');rAll();
+    }catch(e){toast('ملف غير صالح','e')}
+    inp.value='';
+  };r.readAsText(f);
+}
+async function resetAll(){
+  if(!await ask('مسح كل الأصناف والوصولات والإعدادات؟\nلا يمكن التراجع (تأكد من أخذ نسخة احتياطية).','متابعة',true))return;
+  if(!await ask('تأكيد أخير: مسح كل شيء؟','نعم، امسح',true))return;
+  D=def();UNLOCK=false;SD();document.body.classList.remove('light');toast('تم مسح البيانات');rAll();
+}
+
+/* ================= الرمز السري ================= */
+const hp=s=>{let h=5381;s='mtd|'+s;for(let i=0;i<s.length;i++)h=((h<<5)+h+s.charCodeAt(i))|0;return String(h>>>0)};
+function lockBtn(){
+  if(!D.set.pin){go('set');sgOpen('sg-sec');toast('عيّن رمزاً لحماية أسعار الشراء');return}
+  if(UNLOCK){UNLOCK=false;rAll();toast('🔒 تم القفل')}else openPin('unlock');
+}
+function openPin(mode){
+  const old=mode==='change'||mode==='remove';
+  const T={unlock:'أدخل الرمز',set:'تعيين رمز جديد',change:'تغيير الرمز',remove:'إلغاء الرمز'}[mode];
+  $('#pn-t').textContent=T;
+  $('#pn-b').innerHTML=`
+  ${mode==='unlock'||old?`<label class="lb" style="margin-top:0">${mode==='unlock'?'الرمز':'الرمز الحالي'}</label><input id="pn-o" class="in big" type="password" inputmode="numeric" autocomplete="off" style="text-align:center;letter-spacing:6px">`:''}
+  ${mode==='set'||mode==='change'?`<label class="lb">الرمز الجديد (4 أرقام على الأقل)</label><input id="pn-n" class="in big" type="password" inputmode="numeric" autocomplete="off" style="text-align:center;letter-spacing:6px"><label class="lb">أعد كتابة الرمز</label><input id="pn-n2" class="in big" type="password" inputmode="numeric" autocomplete="off" style="text-align:center;letter-spacing:6px">`:''}
+  <button class="btn btn-g btn-fw" style="margin-top:14px" onclick="pinOk('${mode}')">تأكيد</button>
+  ${mode==='unlock'?`<div class="hint" style="text-align:center;cursor:pointer" onclick="pinForgot()">نسيت الرمز؟</div>`:''}`;
+  ov('ov-pin');setTimeout(()=>{const f=$('#pn-o')||$('#pn-n');f&&f.focus()},150);
+}
+async function pinOk(mode){
+  const o=$('#pn-o')?$('#pn-o').value:'',n=$('#pn-n')?$('#pn-n').value:'',n2=$('#pn-n2')?$('#pn-n2').value:'';
+  if(mode!=='set'&&hp(o)!==D.set.pin){toast('رمز خاطئ','e');return}
+  if(mode==='unlock'){UNLOCK=true;cl('ov-pin');toast('🔓 تم الفتح');rAll();return}
+  if(mode==='remove'){D.set.pin='';D.set.rec='';UNLOCK=false;SD();cl('ov-pin');toast('أُلغي الرمز');rAll();return}
+  if(n.length<4||!/^\d+$/.test(n)){toast('الرمز: 4 أرقام على الأقل','e');return}
+  if(n!==n2){toast('الرمزان غير متطابقين','e');return}
+  const code=String(Math.floor(100000+Math.random()*900000));
+  D.set.pin=hp(n);D.set.rec=hp(code);UNLOCK=true;SD();cl('ov-pin');rAll();
+  await ask('تم حفظ الرمز.\n\nرمز الاسترجاع (دوّنه الآن، لن يظهر مرة أخرى):\n'+code+'\n\nيُستعمل إذا نسيت الرمز.','تم، دوّنته',false,true);
+}
+function pinForgot(){
+  $('#pn-b').innerHTML=`<label class="lb" style="margin-top:0">رمز الاسترجاع (6 أرقام)</label><input id="pn-r" class="in big" type="password" inputmode="numeric" autocomplete="off" style="text-align:center;letter-spacing:6px"><button class="btn btn-g btn-fw" style="margin-top:14px" onclick="pinRec()">إلغاء الرمز</button>`;
+}
+function pinRec(){
+  if(hp($('#pn-r').value)!==D.set.rec){toast('رمز الاسترجاع خاطئ','e');return}
+  D.set.pin='';D.set.rec='';UNLOCK=false;SD();cl('ov-pin');toast('أُلغي الرمز، عيّن رمزاً جديداً من الإعدادات');rAll();
+}
+
+/* ================= الوثائق و PDF ================= */
+let CURFMT='a4',CURNAME='doc';
+const PW={a4:[794,1123],a5:[559,794]};
+const DCSS=`*{box-sizing:border-box}body{margin:0;background:#6b7280;font-family:'Cairo','Segoe UI',Tahoma,Arial,sans-serif;color:#111}
+.page{position:relative;background:#fff;margin:12px auto;overflow:hidden;direction:rtl}
+.a4{width:794px;height:1123px;padding:40px 44px}.a5{width:559px;height:794px;padding:28px 30px}
+.hd{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:3px solid #00995a;padding-bottom:10px;margin-bottom:12px}
+.hd .sn{font-size:22px;font-weight:800;color:#0b6b42}.hd .si{font-size:11px;color:#444;line-height:1.7}
+.hd .dt{text-align:left;direction:ltr}.hd .dt b{display:block;font-size:15px;color:#111}.hd .dt span{font-size:11px;color:#555;display:block;line-height:1.7}
+.tt{font-size:18px;font-weight:800;text-align:center;margin:6px 0 4px}.sub{font-size:12px;color:#555;text-align:center;margin-bottom:10px}
+.ci{font-size:12px;margin:0 0 8px;color:#222}
+.t{width:100%;border-collapse:collapse;font-size:11.5px}.t th{background:#0b6b42;color:#fff;padding:6px 5px;font-weight:700;text-align:center}
+.t td{border-bottom:1px solid #d6dbe3;padding:5px 5px;text-align:center;vertical-align:middle}.t td.l{text-align:right}.t tr:nth-child(even) td{background:#f5f8fb}
+.rf{font:600 10px monospace;direction:ltr;color:#666;text-align:right}
+.a5 .t{font-size:12px}.a5 .t td{padding:7px 5px}
+.kp{display:flex;gap:8px;margin-bottom:12px}.kp div{flex:1;border:1px solid #cfd6e0;border-radius:8px;padding:8px;text-align:center}.kp b{display:block;font-size:15px;color:#0b6b42}.kp span{font-size:10.5px;color:#555}
+.tb{margin-top:12px;display:flex;justify-content:flex-end}.tb div{min-width:210px;border:2px solid #0b6b42;border-radius:8px;padding:8px 12px;display:flex;justify-content:space-between;align-items:baseline;gap:14px;font-weight:800}
+.tb b{font-size:18px;color:#0b6b42}.eq{text-align:left;font-size:11px;color:#555;margin-top:4px}
+.sg{position:absolute;bottom:56px;left:30px;right:30px;display:flex;justify-content:space-between;font-size:11px;color:#444}
+.sg div{width:42%;text-align:center;border-top:1px solid #888;padding-top:4px}
+.pf{position:absolute;bottom:18px;left:0;right:0;text-align:center;font-size:10px;color:#777}
+.wm{position:absolute;top:42%;left:0;right:0;text-align:center;font-size:70px;font-weight:800;color:rgba(214,59,59,.18);transform:rotate(-20deg);pointer-events:none}
+.nt{font-size:11px;color:#444;margin-top:8px}
+@media print{body{background:#fff}.page{margin:0;page-break-after:always}@page{margin:0}}`;
+function showDoc(inner,fmt,name){
+  CURFMT=fmt;CURNAME=name;
+  const f=$('#ifr');
+  f.srcdoc=`<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet"><style>${DCSS}@media print{@page{size:${fmt==='a5'?'A5':'A4'};margin:0}}</style></head><body>${inner}</body></html>`;
+  f.onload=()=>setTimeout(fitIfr,60);
+  ov('ov-iframe');
+}
+function fitIfr(){
+  const f=$('#ifr'),d=f.contentDocument;if(!d||!d.body)return;
+  const w=f.clientWidth||390,pw=PW[CURFMT][0]+24;
+  d.body.style.zoom=Math.min(1.2,w/pw);
+}
+function prDoc(){
+  const f=$('#ifr');if(!f.contentDocument)return;
+  f.contentDocument.body.style.zoom=1;
+  try{f.contentWindow.focus();f.contentWindow.print()}catch(e){toast('تعذّرت الطباعة','e')}
+  setTimeout(fitIfr,600);
+}
+async function dlPDF(){
+  const f=$('#ifr'),d=f.contentDocument,btn=$('#pdfb');if(!d)return;
+  const pgs=[...d.querySelectorAll('.page')];if(!pgs.length)return;
+  btn.disabled=true;btn.textContent='جارٍ الإنشاء...';
+  try{
+    if(d.fonts&&d.fonts.ready)await Promise.race([d.fonts.ready,new Promise(r=>setTimeout(r,2500))]);
+    d.body.style.zoom=1;
+    const {jsPDF}=window.jspdf,W=CURFMT==='a5'?148:210,H=CURFMT==='a5'?210:297;
+    const pdf=new jsPDF({unit:'mm',format:CURFMT,orientation:'p',compress:true});
+    for(let i=0;i<pgs.length;i++){
+      const c=await html2canvas(pgs[i],{scale:2,backgroundColor:'#ffffff',useCORS:true,logging:false});
+      if(i)pdf.addPage(CURFMT,'p');
+      pdf.addImage(c.toDataURL('image/jpeg',.92),'JPEG',0,0,W,H);
+    }
+    pdf.save(CURNAME+'.pdf');toast('تم تحميل الملف');
+  }catch(e){console.error(e);toast('تعذّر إنشاء PDF','e')}
+  finally{btn.disabled=false;btn.textContent='تحميل PDF';fitIfr()}
+}
+function shopHdr(title,sub,right){
+  const s=D.set;
+  return `<div class="hd"><div><div class="sn">${esc(s.shop||'المعتمد · قطع غيار السيارات')}</div><div class="si">${esc(s.addr)}${s.addr&&s.phone?'<br>':''}${s.phone?'📞 '+esc(s.phone):''}</div></div>${right||`<div class="dt"><b>${fd(Date.now())}</b><span>${ft(Date.now())}</span></div>`}</div>${title?`<div class="tt">${title}</div>`:''}${sub?`<div class="sub">${sub}</div>`:''}`;
+}
+function receiptH(s){
+  const per=11,ch=[];for(let i=0;i<s.items.length;i+=per)ch.push(s.items.slice(i,i+per));
+  const no=String(s.no).padStart(5,'0');
+  return ch.map((it,pi)=>{
+    const last=pi===ch.length-1;
+    return `<div class="page a5">${shopHdr('وصل بيع · BON DE VENTE','',`<div class="dt"><b>N° ${no}</b><span>${fd(s.ts)} · ${ft(s.ts)}</span></div>`)}
+    ${s.cust?`<div class="ci"><b>الزبون · Client :</b> <bdi>${esc(s.cust)}</bdi></div>`:''}
+    <table class="t"><thead><tr><th style="width:26px">#</th><th>البيان · Désignation</th><th style="width:40px">الكمية</th><th style="width:80px">السعر</th><th style="width:90px">المجموع</th></tr></thead><tbody>
+    ${it.map((i,k)=>`<tr><td>${pi*per+k+1}</td><td class="l">${esc(i.name)}${i.type?` <span style="font-size:10px;color:#666">(${i.type==='o'?'أصلية':'مقلدة'})</span>`:''}${i.ref?`<div class="rf">${esc(i.ref)}</div>`:''}</td><td>${i.qty}</td><td>${nf(Math.round(i.price))}</td><td><b>${nf(Math.round(i.price*i.qty))}</b></td></tr>`).join('')}
+    </tbody></table>
+    ${last?`<div class="tb"><div><span>المجموع · TOTAL</span><b>${nf(Math.round(s.total))} دج</b></div></div>${s.cur==='EUR'?`<div class="eq">≈ ${nf(Math.round(s.total/s.rate*100)/100)} € (1 € = ${nf(s.rate)} دج)</div>`:''}${s.note?`<div class="nt">ملاحظة: ${esc(s.note)}</div>`:''}`:''}
+    ${last?`<div class="sg"><div>البائع · Vendeur</div><div>المشتري · Client</div></div>`:''}
+    <div class="pf">${esc(D.set.foot||'')}${ch.length>1?' · صفحة '+(pi+1)+'/'+ch.length:''}</div>
+    ${s.void?'<div class="wm">ملغى · ANNULÉ</div>':''}</div>`;
+  }).join('');
+}
+function tblPages(o){
+  const per=o.per||23,chunks=[];for(let i=0;i<o.rows.length;i+=per)chunks.push(o.rows.slice(i,i+per));if(!chunks.length)chunks.push([]);
+  return chunks.map((ch,pi)=>`<div class="page a4">${shopHdr(o.title,o.sub)}${pi===0&&o.kpis?`<div class="kp">${o.kpis.map(k=>`<div><b>${k[1]}</b><span>${k[0]}</span></div>`).join('')}</div>`:''}
+  <table class="t"><thead><tr>${o.cols.map(c=>`<th style="width:${c.w||'auto'}">${c.h}</th>`).join('')}</tr></thead><tbody>${ch.map(r=>`<tr>${r.map((v,i)=>`<td class="${o.cols[i].c||''}">${v}</td>`).join('')}</tr>`).join('')||`<tr><td colspan="${o.cols.length}">لا توجد بيانات</td></tr>`}</tbody></table>
+  ${pi===chunks.length-1&&o.foot?o.foot:''}<div class="pf">${esc(D.set.shop||'المعتمد')} · صفحة ${pi+1}/${chunks.length}</div></div>`).join('');
+}
+/* ---- التقارير ---- */
+let RPK='today';
+function openRep(){
+  const see=canSee();
+  $('#rp-b').innerHTML=`
+  <label class="lb" style="margin-top:0">📊 تقرير المبيعات</label>
+  <div class="seg" id="rp-seg" style="flex-wrap:wrap"><button data-k="today" class="on" onclick="rpK('today')">اليوم</button><button data-k="yday" onclick="rpK('yday')">أمس</button><button data-k="week" onclick="rpK('week')">7 أيام</button><button data-k="month" onclick="rpK('month')">الشهر</button><button data-k="custom" onclick="rpK('custom')">مخصص</button></div>
+  <div class="g2" id="rp-c" style="display:none"><div><label class="lb">من</label><input id="rp-a" class="in" type="date" value="${iso(Date.now())}"></div><div><label class="lb">إلى</label><input id="rp-b2" class="in" type="date" value="${iso(Date.now())}"></div></div>
+  <button class="btn btn-g btn-fw" style="margin-top:10px" onclick="genSales()">إنشاء تقرير المبيعات</button>
+  <hr style="border:0;border-top:1px solid var(--ln);margin:18px 0 6px">
+  <label class="lb">📦 جرد المخزن</label>
+  <div class="g2"><select id="iv-loc" class="in"><option value="all">كل الأماكن</option><option value="shelf">في الرف</option><option value="store">في المخزن</option></select>
+  <select id="iv-type" class="in"><option value="">كل الأنواع</option><option value="o">أصلية</option><option value="c">مقلدة</option></select></div>
+  <label class="lb" style="display:flex;gap:8px;align-items:center"><input type="checkbox" id="iv-low"> المخزون المنخفض والنافد فقط</label>
+  <label class="lb" style="display:flex;gap:8px;align-items:center"><input type="checkbox" id="iv-buy" ${see?'':'disabled'}> إدراج أسعار الشراء ${see?'':'🔒'}</label>
+  <button class="btn btn-g btn-fw" style="margin-top:10px" onclick="genInv()">إنشاء جرد المخزن</button>`;
+  RPK='today';ov('ov-rep');
+}
+function rpK(k){RPK=k;$$('#rp-seg button').forEach(b=>b.classList.toggle('on',b.dataset.k===k));$('#rp-c').style.display=k==='custom'?'grid':'none'}
+function rng(k){
+  const n=new Date(),s=new Date(n.getFullYear(),n.getMonth(),n.getDate()).getTime(),d=864e5;let A,B;
+  if(k==='today'){A=s;B=s+d}else if(k==='yday'){A=s-d;B=s}else if(k==='week'){A=s-6*d;B=s+d}else if(k==='month'){A=new Date(n.getFullYear(),n.getMonth(),1).getTime();B=s+d}
+  else{const a=$('#rp-a').value,b=$('#rp-b2').value;A=a?new Date(a+'T00:00').getTime():s;B=b?new Date(b+'T00:00').getTime()+d:s+d}
+  return [A,B,fd(A)===fd(B-d)?fd(A):'من '+fd(A)+' إلى '+fd(B-d)];
+}
+function genSales(){
+  const [A,B,lbl]=rng(RPK),see=canSee();
+  const L=D.sales.filter(s=>!s.void&&s.ts>=A&&s.ts<B).sort((a,b)=>a.ts-b.ts);
+  const T=L.reduce((a,s)=>a+s.total,0),P=L.reduce((a,s)=>a+saleProfit(s),0),U=L.reduce((a,s)=>a+s.items.reduce((x,i)=>x+i.qty,0),0);
+  const cols=[{h:'التاريخ',w:'92px'},{h:'N°',w:'60px'},{h:'الزبون',c:'l'},{h:'المواد',w:'70px'},{h:'المجموع (دج)',w:'110px'}];if(see)cols.push({h:'الربح (دج)',w:'100px'});
+  const rows=L.map(s=>{const r=[fd(s.ts)+' '+ft(s.ts),String(s.no).padStart(5,'0'),esc(s.cust||'—'),s.items.reduce((a,i)=>a+i.qty,0),nf(Math.round(s.total))];if(see)r.push(nf(Math.round(saleProfit(s))));return r});
+  const kp=[['عدد الوصولات',L.length],['القطع المباعة',U],['المبيعات (دج)',nf(Math.round(T))]];if(see)kp.push(['الربح (دج)',nf(Math.round(P))]);
+  const foot=`<div class="tb"><div><span>الإجمالي</span><b>${nf(Math.round(T))} دج</b></div></div>`;
+  showDoc(tblPages({title:'تقرير المبيعات · Rapport des ventes',sub:lbl,cols,rows,kpis:kp,foot}),'a4','Rapport_ventes_'+iso(A));
+  cl('ov-rep');
+}
+function genInv(){
+  const loc=$('#iv-loc').value,ty=$('#iv-type').value,lo=$('#iv-low').checked,bu=$('#iv-buy').checked&&canSee();
+  let L=D.parts.slice();
+  if(loc==='shelf')L=L.filter(p=>p.qs>0);if(loc==='store')L=L.filter(p=>p.qw>0);if(ty)L=L.filter(p=>p.type===ty);if(lo)L=L.filter(p=>tot(p)<=p.min);
+  L.sort((a,b)=>(a.brand||'').localeCompare(b.brand||'')||a.name.localeCompare(b.name,'ar'));
+  const cols=[{h:'#',w:'28px'},{h:'المرجع',w:'92px'},{h:'البيان · Désignation',c:'l'},{h:'السيارة',w:'100px'},{h:'النوع',w:'46px'},{h:'الرف',w:'46px'},{h:'رف',w:'34px'},{h:'مخزن',w:'40px'},{h:'المجموع',w:'46px'}];
+  if(bu)cols.push({h:'الشراء',w:'62px'});cols.push({h:'البيع',w:'62px'});
+  const rows=L.map((p,i)=>{const r=[i+1,`<span class="rf" style="display:block;text-align:center">${esc(p.ref)}</span>`,esc(p.name),esc(p.brand),p.type==='o'?'أصلية':'مقلدة',esc(p.shelf),p.qs,p.qw,`<b>${tot(p)}</b>`];if(bu)r.push(nf(Math.round(p.buy)));r.push(nf(Math.round(p.sell)));return r});
+  const U=L.reduce((a,p)=>a+tot(p),0),VS=L.reduce((a,p)=>a+tot(p)*p.sell,0),VB=L.reduce((a,p)=>a+tot(p)*p.buy,0);
+  const kp=[['عدد الأصناف',L.length],['مجموع القطع',nf(U)],['قيمة البيع (دج)',nf(Math.round(VS))]];if(bu)kp.push(['قيمة الشراء (دج)',nf(Math.round(VB))]);
+  showDoc(tblPages({title:'جرد المخزن · Inventaire',sub:fd(Date.now())+(loc==='shelf'?' · الرف':loc==='store'?' · المخزن العام':'')+(ty?' · '+(ty==='o'?'أصلية':'مقلدة'):'')+(lo?' · المنخفض فقط':''),cols,rows,kpis:kp,per:22}),'a4','Inventaire_'+iso(Date.now()));
+  cl('ov-rep');
+}
+
+/* ================= بيانات تجريبية ================= */
+function loadDemo(){
+  const P=[
+   ['فلتر زيت · Filtre à huile','8200768913','Renault','Clio 3 · Symbol · Logan','o','A1',6,14,320,550],
+   ['فلتر زيت · Filtre à huile','MANN W712','Renault','Clio 3 · Symbol · Logan','c','A1',4,20,180,350],
+   ['فلتر هواء · Filtre à air','8200431051','Renault','Clio 3 · Symbol','o','A2',3,5,450,800],
+   ['بلاكات فرامل أمامية · Plaquettes avant','410606108R','Dacia','Logan · Sandero','o','B1',2,3,2400,3600],
+   ['بلاكات فرامل أمامية · Plaquettes avant','FERODO FDB1617','Dacia','Logan · Sandero','c','B1',5,9,1100,1900],
+   ['قرص فرامل · Disque de frein','402061051R','Dacia','Logan · Sandero','c','B2',0,4,1500,2600],
+   ['كوروا توقيت · Kit distribution','VKMA 03259','Peugeot','208 · 301 · 1.2 VTi','c','C1',1,2,6800,10500],
+   ['مساعد أمامي · Amortisseur avant','HY-54650','Hyundai','Accent 2012-2017','c','C3',0,4,3200,5200],
+   ['بوجي · Bougie','NGK BKR6E','Mixte / عام','عدة سيارات','c','D1',24,60,90,180],
+   ['بطارية 60Ah · Batterie','VARTA 560408','Mixte / عام','عدة سيارات','o','E1',0,3,9500,13000],
+   ['روتيل · Rotule de direction','6001547580','Renault','Clio 2 · Clio 3','c','C2',2,0,700,1300],
+   ['فانوس أمامي يمين · Phare avant droit','89200-1R','Hyundai','Accent RB 2011-2016','c','F1',1,0,4800,7500],
+   ['فلتر زيت · Filtre à huile','90915-YZZJ2','Toyota','Corolla · Yaris','o','A3',3,6,520,900],
+   ['سير ملحقات · Courroie accessoires','6PK1193','Volkswagen','Golf 6 · Polo','c','C4',2,3,1100,1900],
+   ['طرمبة ماء · Pompe à eau','PA1120','Peugeot','206 · 207 · 301','c','D2',1,2,2100,3400]
+  ];
+  P.forEach(a=>{const p={id:uid(),name:a[0],ref:a[1],brand:a[2],models:a[3],type:a[4],shelf:a[5],qs:a[6],qw:a[7],min:D.set.low,buy:a[8],sell:a[9],note:'',ts:Date.now(),demo:true};D.parts.push(p);D.sups.push({id:uid(),ts:Date.now(),pid:p.id,name:p.name,qty:p.qs+p.qw,buy:p.buy,loc:'w',sup:'',note:'',open:true,demo:true})});
+  SD();toast('تم تحميل '+P.length+' صنف تجريبي');rAll();
+}
+async function rmDemo(){
+  const n=D.parts.filter(p=>p.demo).length;if(!n){toast('لا توجد بيانات تجريبية');return}
+  if(!await ask('حذف '+n+' صنف تجريبي (مع حركاتها)؟','حذف',true))return;
+  const ids=new Set(D.parts.filter(p=>p.demo).map(p=>p.id));
+  D.parts=D.parts.filter(p=>!p.demo);D.sups=D.sups.filter(s=>!ids.has(s.pid));D.cart=D.cart.filter(c=>!ids.has(c.pid));SD();toast('تم الحذف');rAll();bdg();
+}
+
+/* ================= الإقلاع ================= */
+LD();
+document.body.classList.toggle('light',D.set.theme==='light');
+dls();bdg();go('search');
+if(navigator.storage&&navigator.storage.persist)navigator.storage.persist().catch(()=>{});
+if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
+</script>
+</body>
+</html>
