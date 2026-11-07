@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#070b12">
 <meta name="mobile-web-app-capable" content="yes">
+<meta name="application-name" content="المعتمد">
+<meta name="apple-mobile-web-app-title" content="المعتمد">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <link rel="manifest" href="manifest.json">
 <link rel="icon" href="icons/icon-192.png">
@@ -232,9 +234,9 @@ textarea.in{resize:none;min-height:60px}
 <script>
 'use strict';
 /* ================= الثوابت والبيانات ================= */
-const APP_VERSION='1.0.0';
+const APP_VERSION='1.0.1';
 const KEY='almoutamad_v1';
-const CHANGELOG=[{v:'1.0.0',d:'2026-11-07',items:['الإصدار الأول: بحث ثنائي اللغة، رف + مخزن عام، بيع بوصل PDF، توريد، دينار/أورو، رمز حماية الأسعار، نسخ احتياطي']}];
+const CHANGELOG=[{v:'1.0.1',d:'2026-11-07',items:['ختم «المعتمد» على كل ملفات PDF وعند التوقيعات، وإضافة اسم المطور وتاريخ الإصدار']},{v:'1.0.0',d:'2026-11-07',items:['الإصدار الأول: بحث ثنائي اللغة، رف + مخزن عام، بيع بوصل PDF، توريد، دينار/أورو، رمز حماية الأسعار، نسخ احتياطي']}];
 const BRANDS=['Renault','Peugeot','Citroën','Dacia','Hyundai','Kia','Toyota','Volkswagen','Seat','Skoda','Fiat','Chevrolet','Suzuki','Nissan','Ford','Opel','Mercedes','BMW','Audi','Mitsubishi','Mazda','Honda','Isuzu','Chery','Geely','Iveco','Mixte / عام'];
 const SYN=[
 ['فلتر زيت','فلتر الزيت','filtre a huile','filtre huile','oil filter'],
@@ -763,6 +765,8 @@ function rSet(){
   <div class="sg" id="sg-about"><div class="sgh" onclick="sgT('sg-about')">ℹ️ حول التطبيق<i>▾</i></div><div class="sgb">
     <div class="kv"><span>التطبيق</span><b>المعتمد · Al Moutamad</b></div>
     <div class="kv"><span>الإصدار</span><b>v${APP_VERSION}</b></div>
+    <div class="kv"><span>المطور</span><b>Delbaz_Med</b></div>
+    <div class="kv"><span>تاريخ الإصدار</span><b>نوفمبر 2026</b></div>
     <div class="kv"><span>الأصناف / الوصولات</span><b>${D.parts.length} / ${D.sales.length}</b></div>
     ${CHANGELOG.map(c=>`<div class="hint"><b style="color:var(--g)">v${c.v}</b> · ${c.d}<br>${c.items.map(esc).join('<br>')}</div>`).join('')}
   </div></div>`;
@@ -850,7 +854,8 @@ const DCSS=`*{box-sizing:border-box}body{margin:0;background:#6b7280;font-family
 .tb{margin-top:12px;display:flex;justify-content:flex-end}.tb div{min-width:210px;border:2px solid #0b6b42;border-radius:8px;padding:8px 12px;display:flex;justify-content:space-between;align-items:baseline;gap:14px;font-weight:800}
 .tb b{font-size:18px;color:#0b6b42}.eq{text-align:left;font-size:11px;color:#555;margin-top:4px}
 .sg{position:absolute;bottom:56px;left:30px;right:30px;display:flex;justify-content:space-between;font-size:11px;color:#444}
-.sg div{width:42%;text-align:center;border-top:1px solid #888;padding-top:4px}
+.sg div{width:34%;text-align:center;border-top:1px solid #888;padding-top:4px}
+.sg .bm{width:auto;border:2px solid #0b6b42;border-radius:8px;padding:3px 16px;color:#0b6b42;font-weight:800;font-size:15px;transform:rotate(-5deg);align-self:flex-end;margin-bottom:6px}
 .pf{position:absolute;bottom:18px;left:0;right:0;text-align:center;font-size:10px;color:#777}
 .wm{position:absolute;top:42%;left:0;right:0;text-align:center;font-size:70px;font-weight:800;color:rgba(214,59,59,.18);transform:rotate(-20deg);pointer-events:none}
 .nt{font-size:11px;color:#444;margin-top:8px}
@@ -906,8 +911,8 @@ function receiptH(s){
     ${it.map((i,k)=>`<tr><td>${pi*per+k+1}</td><td class="l">${esc(i.name)}${i.type?` <span style="font-size:10px;color:#666">(${i.type==='o'?'أصلية':'مقلدة'})</span>`:''}${i.ref?`<div class="rf">${esc(i.ref)}</div>`:''}</td><td>${i.qty}</td><td>${nf(Math.round(i.price))}</td><td><b>${nf(Math.round(i.price*i.qty))}</b></td></tr>`).join('')}
     </tbody></table>
     ${last?`<div class="tb"><div><span>المجموع · TOTAL</span><b>${nf(Math.round(s.total))} دج</b></div></div>${s.cur==='EUR'?`<div class="eq">≈ ${nf(Math.round(s.total/s.rate*100)/100)} € (1 € = ${nf(s.rate)} دج)</div>`:''}${s.note?`<div class="nt">ملاحظة: ${esc(s.note)}</div>`:''}`:''}
-    ${last?`<div class="sg"><div>البائع · Vendeur</div><div>المشتري · Client</div></div>`:''}
-    <div class="pf">${esc(D.set.foot||'')}${ch.length>1?' · صفحة '+(pi+1)+'/'+ch.length:''}</div>
+    ${last?`<div class="sg"><div>البائع · Vendeur</div><div class="bm">المعتمد</div><div>المشتري · Client</div></div>`:''}
+    <div class="pf">المعتمد${D.set.foot?' · '+esc(D.set.foot):''}${ch.length>1?' · صفحة '+(pi+1)+'/'+ch.length:''}</div>
     ${s.void?'<div class="wm">ملغى · ANNULÉ</div>':''}</div>`;
   }).join('');
 }
@@ -915,7 +920,7 @@ function tblPages(o){
   const per=o.per||23,chunks=[];for(let i=0;i<o.rows.length;i+=per)chunks.push(o.rows.slice(i,i+per));if(!chunks.length)chunks.push([]);
   return chunks.map((ch,pi)=>`<div class="page a4">${shopHdr(o.title,o.sub)}${pi===0&&o.kpis?`<div class="kp">${o.kpis.map(k=>`<div><b>${k[1]}</b><span>${k[0]}</span></div>`).join('')}</div>`:''}
   <table class="t"><thead><tr>${o.cols.map(c=>`<th style="width:${c.w||'auto'}">${c.h}</th>`).join('')}</tr></thead><tbody>${ch.map(r=>`<tr>${r.map((v,i)=>`<td class="${o.cols[i].c||''}">${v}</td>`).join('')}</tr>`).join('')||`<tr><td colspan="${o.cols.length}">لا توجد بيانات</td></tr>`}</tbody></table>
-  ${pi===chunks.length-1&&o.foot?o.foot:''}<div class="pf">${esc(D.set.shop||'المعتمد')} · صفحة ${pi+1}/${chunks.length}</div></div>`).join('');
+  ${pi===chunks.length-1&&o.foot?o.foot:''}${pi===chunks.length-1?'<div class="sg"><div>التوقيع · Signature</div><div class="bm">المعتمد</div><div>المسؤول · Responsable</div></div>':''}<div class="pf">المعتمد${D.set.shop?' · '+esc(D.set.shop):''} · صفحة ${pi+1}/${chunks.length}</div></div>`).join('');
 }
 /* ---- التقارير ---- */
 let RPK='today';
